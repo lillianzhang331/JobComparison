@@ -52,6 +52,31 @@
 * Salary and Bonus attribute can be treated as a float instead of creating Money utility class
 
 ## Design 3
+### Toks' Design
+![Toks' design](toksdesign.png)
+### Pros
+* The design includes the MainMenu which interfaces with the GUI 
+* Main Menu class contains all the 4 main operations of the app.
+* Design includes all required classes: JobDetails, ComparisonSettings, CurrentJobOffers, CurrentJob, JobOffer. Does not have any extraneous classes. 
+* Simple and clean design overall
+* Attributes in JobInfo and ComparisonSettings (with default values) included 
+* Descriptive text included for relationships
+* Relationships cardinality included
+* Default value for all attributes in ComparisonSettings class
+* CurrentJob and JobOffer are subclasses of JobDetails class as described in the requirements.
+* CompareJobOffers class has the list of all the jobs as per the requirements.
+* CompareJobOffers class correctly shows the dependency association with the JobDetails class
+
+### Cons
+* Incorrect cardinality: CurrentJob cannot be more than 1 job and the cardinality should reflect this as [0..1]
+* CompareJobOffers uses ComparisonSettings to rank jobs but this is not shown in the design
+* saveDetails() and cancelAndExit() should not be methods in the jobDetails class, they are implemented via the GUI instead since the job itself would not save/cancel
+* All three operations in JobOffer are not needed
+* Location (JobDetails attribute) not split into state and city  per requirements 
+* enterCurrentJobDetails, enter job offers, adjust the comparison settings, or compare job offers are interactions between the classes. Because these operations do not belong to only one class, instead they are a relationship between the classes. So they can be labeled on the association lines.
+* performAnotherComparison(), enterAnotherOffer() operations are already defined in the design in other classes, so they need not be specified again.
+* editDetails() need not be a separate operation, as the fields can be open to edit and save() would take care of storing the edited fields.
+* Wrongfully depicted relationship between CurrentJob and Main as many (*) to 1 
 
 ## Design 4
 
