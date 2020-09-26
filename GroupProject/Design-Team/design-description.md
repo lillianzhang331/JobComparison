@@ -18,7 +18,7 @@
     - Leave time (vacation days and holiday and/or sick leave, as a single overall number of days)
   - Be able to either save the job details or cancel and exit without saving, returning in both cases to the main menu.
 
-**This requirement is realized by the _MainMenu_ and the _Job_ classes. Both classes have an association relationship which is called by _enterCurrentJob_ operation in _MainMenu_. The _Job_ class has the attributes representing the job details listed above with an additional derived attribute - _jobScore_ - for ranking jobs.**
+**This requirement is realized by the _MainMenu_ and the _Job_ classes. Both classes have an association relationship which is called by _enterCurrentJob_ operation in _MainMenu_. The _Job_ class has the attributes representing the job details listed above with an additional derived attribute - _jobScore_ - for ranking jobs. The attributes _salary_ and _bonus_ use the datatype Money from the _Money_ utility class.**
 
 
 3. When choosing to enter job offers, a user will:
@@ -27,7 +27,7 @@
   - Be able to (1) enter another offer, (2) return to the main menu, or (3) compare the offer with the current job details (if present).
 
 
-**The above requirement is realized by having a _JobOffer_ class that interacts with the _MainMenu_ class by association relationship. The _JobOffer_ class is a subclass and its superclass is the _Job_ class, similar to the _CurrentJob_ class. The _CurrentJob_ class has a  _enterAnotherJobOffer_ operation according to the requirement.**
+**The above requirement is realized by having a _JobOffer_ class that interacts with the _MainMenu_ class by association relationship. The _JobOffer_ class is a subclass and its superclass is the _Job_ class, similar to the _CurrentJob_ class. The _JobOffer_ class has a  _compareWithCurrentJob_ operation according to the requirement.**
 
 4. When adjusting the comparison settings, the user can assign integer weights to:
   - Commute time
@@ -54,7 +54,7 @@
     - Leave time
   - Be offered to perform another comparison or go back to the main menu.
 
-**This requirement is realized by the _CompareJobs_ class. This class has a _jobs_ attribute, which is a list of jobs with attributes from the _Jobs_ class without _commuteTime_ (not shown in design). The _CompareJobs_ class is associated with the _MainMenu_ and is called by _compareJobOffers_ operation from _MainMenu_ while using the _ComparisonSettings_ class and job attributes from the _Job_ class. The _ranking_, _compareJobs_, _performAnotherComparison_, and _cancel_ methods satisfy the action requirements for this class.**
+**This requirement is realized by the _CompareJobs_ class. This class has a _jobs_ attribute, which is a list of jobs with attributes from the _Jobs_ class without _commuteTime_ (not shown in design). The _CompareJobs_ class is associated with the _MainMenu_ and is called by _compareJobOffers_ operation from _MainMenu_ while using the _ComparisonSettings_ class and job attributes from the _Job_ class. The _ranking_, _compareJobs_, and _cancel_ methods satisfy the action requirements for this class.**
 
 
 
