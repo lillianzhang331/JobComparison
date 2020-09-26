@@ -32,12 +32,14 @@
 * Cardinality in class relationships are provided
 * Descriptive text of relationships provided
 * Attributes in JobInfo and ComparisonSettings(with default values)included
-* *QUESTION: What is getDate() for?[Operating System utility class]
+* QUESTION: What is getDate() for?[Operating System utility class]
+* Save and Cancel methods are captured correctly.
+* Dependencies and associations are captured correctly.
 
 ### Cons
 * Is the user the same as the main menu? Is this considered the entry point to the system?
-* Should commuteTime be set as a date or float?○Should save() and cancel() be part of the jobInfo class? Is this not a GUI implementation?
-* Why is it 1 to 0...* for joblist and job info? Does that mean there could be multiplejob infos for each job? Technically if there are two jobs with the same details, they would be regarded as two separate jobs right? Would making it a 1 to 1 relationship make more sense?
+* Should commuteTime be set as a date or float?
+* Why is it 1 to 0...* for joblist and job info? Does that mean there could be multiple job infos for each job? Technically if there are two jobs with the same details, they would be regarded as two separate jobs right? Would making it a 1 to 1 relationship make more sense?
 * Is there supposed to be a relationship between job list and comparison table? I think the user is able to adjust the comparison table even without having entered a job so maybe the relationship should exist between comparison table and the user/main menu instead
 * There shouldn’t be any space in the Class name string, e.g: JobList (not Job List)
 * Not sure of the Aggregation/Association relation between JobList and Job Info. Should it be arrowhead be on the other end?
@@ -45,6 +47,9 @@
   - Float or Integer?
 * No operations in MainMenu
 * No location (state/city) attributes in JobInfo
+* Job List should not be separate class. It is list of jobs object with ranking. It should be part of ComparisonTable class.
+* Not sure about usage of utility class for Money, Date and Operating System.
+* Salary and Bonus attribute can be treated as a float instead of creating Money utility class
 
 ## Design 3
 
