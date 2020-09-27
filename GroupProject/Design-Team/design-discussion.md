@@ -72,7 +72,7 @@
 * enterCurrentJobDetails, enter job offers, adjust the comparison settings, or compare job offers are interactions between the classes. Because these operations do not belong to only one class, instead they are a relationship between the classes. So they can be labeled on the association lines.
 * performAnotherComparison(), enterAnotherOffer() operations are already defined in the design in other classes, so they need not be specified again.
 * editDetails() need not be a separate operation, as the fields can be open to edit and save() would take care of storing the edited fields.
-* Wrongfully depicted relationship between CurrentJob and Main as many (*) to 1.
+* Wrongfully depicted relationship between CurrentJob and Main as many to 1.
 
 ## Design 4
 ### Mitesh's Desgin
@@ -94,12 +94,15 @@
 * No need of compId attribute in CompOffers class.
 
 ## Team Design
-![Team Design](./Design-Team/teamdesign.png)
+![Team Design](teamdesign.png)
 ### General classes
 The main commonalities between the team design and the individual designs are the existence of the four main classes: MainMenu, CurrentJob, JobOffer, and ComparisonSettings. These were the classes that were explicitly stated in the requirements along with a set of necessary attributes (such as company name and location). While UML designs may vary from team to team or iteration to iteration, these four classes are the key actors in the system and each class's attributes and methods should remain relatively consistent through various designs.
 ### Job Inheritance
 We decided to have the CurrentJob and JobOffer classes inherit the general Job class. This is largely because a current job and a job offer differs only in that there can be a maximum of one current job at any time whereas a user can enter multiple job offers and the user has the option to compare any job offer with the current job (if present) upon creating a new job offer. Other than these, the attributes of both classes are the same and thus, should not be implemented more than once to avoid redundancy. The Job inheritance is common among all but one of the individual designs.
-###
+### Comparing Jobs
+The way we designed the flow to compare jobs is mostly adopted from Bharathi's and Tok's designs. Our UML diagram includes a separate CompareJobs class that consists of a list which tracks and ranks current job and job offers. The "compare jobs" action can be called from the main menu and from the "add job offer" screen so there is a "compareJobOffers" and "compareWithCurrentJob" relationship connecting those classes respectively. The importance of this class is to satisfy the requirements of ranking and displaying jobs selected by the user for comparison. The ComparisonSettings is then associated with the compareJobOffers relationship because it is used to weight certain factors for score calculation prior to ranking and comparing.
+### Utilities
+In contrast to all of our individual designs, the team design has only one utility class which is the money class. This utility will be used to answer the monetary compensation fields for the current job or a job offer. All other attributes of the Job class can be completed with other datatypes. 
 
 ## Summary
 In this assignment, as a team we are able to discuss individual take on designing an application. It reflected the views on many design methodologies used by an individual.  
