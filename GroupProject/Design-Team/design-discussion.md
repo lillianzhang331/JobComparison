@@ -8,6 +8,8 @@
 * Job and ComparisonSettings class has all the required attributes.
 * CurrentJob and JobOffer classes are types (is a kind of) of Job class as described in the requirements.
 * User class contains the 4 main operations of the app.
+* Clean overall design.
+* Correctly provided multiplicity between classes
 
 ### Cons
 * No initial (default) values set for ComparisonSettings attributes.
