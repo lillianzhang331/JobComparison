@@ -1,5 +1,6 @@
 # Design Discussion for JobCompare App
 ## Design 1
+### Lillian's Design
 ![Lillian's design](lilliandesign.png)
 ### Pros
 * The design includes the main menu (User) which interfaces with the GUI and the required operations.
@@ -83,7 +84,7 @@
 * Included relationships and its cardinality.
 * Created generic method for the weights. One can create as many weight attributes with its weightage as required.
 
-###Cons
+### Cons
 * Missed relationship description between classes.
 * Unnecessary class creation: Location class.
 * Better to create JobDetails as a base class.
