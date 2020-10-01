@@ -3,11 +3,9 @@
 **Author**: 6300Fall20Team030
 
 ## 1 Introduction
-------
 This project is for designing an android application that allows a user to make comparisons between a job offer and either their current job or another job offer. The user will have the option to adjust weights used in score calculations with attributes such as salary, benefits, and commute time.
 
 ## 2 Process Description
-------
 #### Week 1- Software Design (Due 9/28 8am EST)
 ###### Individual UML class diagram designs
 * Description: Each member of the team should create their own interpretation of the project requirements into a UML class diagram. The diagram should be accompanied by a design description addressing each requirement and how it is encompassed by their design. Upon completion, the team will come together to critique each design for their pros and cons.
@@ -83,7 +81,6 @@ This project is for designing an android application that allows a user to make 
 * Exit criteria: Testing results are reported in an organized fashion and all should reflect passing tests
 
 ## 3 Team
-------
 #### Team members
 * Lillian Zhang
 * Mitesh Modi
