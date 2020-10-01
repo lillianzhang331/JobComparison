@@ -1,6 +1,6 @@
 # Use Case Model
 
-Use case diagram overview the usage requirements for the Job Compare system. These are useful for actual development and the use cases provide significantly more value because they describe the actual requirements with clear flow of events. The use case diagram is below for the Job Compare system.
+Use case diagrams provide overview for the usage requirements in the Job Compare system. These are useful for actual development and the use cases provide significantly more value because they describe the actual requirements with clear flow of events. The use case diagram below is for the Job Compare system.
 
 **Author**: 6300Fall20Team030
 
