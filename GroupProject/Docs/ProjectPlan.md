@@ -35,7 +35,7 @@ This project is for designing an android application that allows a user to make 
 
 #### Design document
 * Description: The design document includes design considerations, which consists of assumptions, constraints, and the system environment. Secondly, it includes architectural design, consisting of a component diagram and a deployment diagram. Thirdly, it includes low level designs such as the class diagram and other necessary diagrams. Lastly, this document includes a user interface design that provides a layout of the user interface.
-* Entrance criteria: Assignment requirements, knowledge of design and diagram concepts, and diagraming tools (lucidchart, flow.io, etc)
+* Entrance criteria: Assignment requirements, knowledge of design and diagram concepts, UML class diagram/descrition from prior week, and diagraming tools (lucidchart, flow.io, etc)
 * Exit criteria: Diagrams reflect the requirements outlined in the project and do not contradict each other. Diagrams and design considerations should be reviewed by all members and uploaded to the team github.
 
 #### Test plan
