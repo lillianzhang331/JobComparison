@@ -26,7 +26,7 @@ Use case diagrams provide overview for the usage requirements in the Job Compare
 ## 2 Use Case Descriptions
 
 ### Enter Current job
-- *Requirements:* This use case allows the user to enter the current job details.
+- *Requirements:* This use case allows the user to enter or edit the current job details.
 - *Pre-conditions:* None
 - *Post-conditions:* None
 - *Scenarios:*
