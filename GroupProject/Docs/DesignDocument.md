@@ -9,12 +9,12 @@ This application is designed with the following assumptions in mind:
 * User is operating on an Android device.
 * Utility classes will be used to represent money.
 * The application will be in English.
-* The device will not maintain cross session state.
+* The device will maintain cross session state.
 * User will not have to sign in or create an account to use the application.
 
 ### 1.2 Constraints
 This application is designed with the following constraints in mind:
-* The application will not keep track of information from another session so if the user exits out of application, they will have to enter information again.
+* The application will keep track of information from another session assuming that the user saves it. So if the user exits out of application and reopens it, their previous data will be retained.
 * There is no way to edit or delete job offers.
 * The user can edit the current job multiple times, but cannot delete it.
 * When adding the current job or a job offer, all fields are mandatory for the job details to be saved.
