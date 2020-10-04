@@ -5,7 +5,7 @@ Use case diagrams provide overview for the usage requirements in the Job Compare
 **Author**: 6300Fall20Team030
 
 ## 1 Use Case Diagram
-![Use Case Diagram](usecasediagram.png)
+![Use Case Diagram](Images/usecasediagram.png)
 
 ### Actors
   - ***User***
