@@ -1,7 +1,7 @@
 # Extra Requirements for JobCompare App
 
 ## NFR - Non Functional Requirements and System Requirements
-* The user interface should not be lagging behind and must not take more than 30 seconds while executing any operation.
+* The user interface should not be lagging behind and must not take more than 10 seconds while executing any operation.
 * Application should be developed using Android studio.
 * Application should not create any session for the user.
 * The system must be able to deal with large data as more jobs are added without the options of deleting.
