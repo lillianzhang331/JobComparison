@@ -28,7 +28,7 @@ Use case diagrams provide overview for the usage requirements in the Job Compare
 ### Enter Current job
 - *Requirements:* This use case allows the user to enter or edit the current job details.
 - *Pre-conditions:* None
-- *Post-conditions:* None
+- *Post-conditions:* Validate the data-type inputs for all the fields before saving the details.
 - *Scenarios:*
   - The user opens the app and selects **EnterCurrentJob** button from the main menu.
   - The user enters the details of the current job.
@@ -39,7 +39,7 @@ Use case diagrams provide overview for the usage requirements in the Job Compare
 ### Enter Job Offer
 - *Requirements:* This use case allows the user to enter the details of a job offer.
 - *Pre-conditions:* None
-- *Post-conditions:* None
+- *Post-conditions:* Validate the data-type inputs for all the fields before saving the details.
 - *Scenarios:*
   - The user opens the app and selects **EnterJobOffer** button from the main menu.
   - The user enters the details of the job offer.
