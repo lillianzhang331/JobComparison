@@ -320,7 +320,7 @@
                 android:textSize="24sp" />
 
             <EditText
-                android:id="@+id/currentMatchingID"
+                android:id="@+id/currentRetirementID"
                 android:layout_width="99dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

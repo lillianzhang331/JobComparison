@@ -311,7 +311,7 @@
                 android:textSize="24sp" />
 
             <EditText
-                android:id="@+id/savedOfferMatchingID"
+                android:id="@+id/savedOfferRetirementID"
                 android:layout_width="99dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
