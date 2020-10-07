@@ -1,0 +1,4 @@
+package edu.gatech.seclass.jobcompare6300;
+
+public class CurrentJobDetails {
+}
