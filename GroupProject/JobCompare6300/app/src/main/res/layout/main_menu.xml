@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="110dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="WELCOME"
+            android:textAlignment="center"
+            android:textColor="#3E7EB6"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TO"
+            android:textAlignment="center"
+            android:textColor="#3E7EB6"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="JOBCOMPARE"
+            android:textAlignment="center"
+            android:textColor="#3E7EB6"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="What would you like to do?"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="175dp"
+                android:layout_height="49dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/editCurrentJobButtonID"
+                android:layout_width="325dp"
+                android:layout_height="wrap_content"
+                android:password="false"
+                android:text="Edit Current Job" />
+
+            <Space
+                android:layout_width="175dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="175dp"
+                android:layout_height="49dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/enterJobOfferButtonID"
+                android:layout_width="325dp"
+                android:layout_height="wrap_content"
+                android:password="false"
+                android:text="Enter Job Offer" />
+
+            <Space
+                android:layout_width="175dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="175dp"
+                android:layout_height="49dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/editComparisonSettingButtonID"
+                android:layout_width="325dp"
+                android:layout_height="wrap_content"
+                android:password="false"
+                android:text="Edit Comparison Settings" />
+
+            <Space
+                android:layout_width="175dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="175dp"
+                android:layout_height="49dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/compareJobsButtonID"
+                android:layout_width="325dp"
+                android:layout_height="wrap_content"
+                android:password="false"
+                android:text="Make Job Comparison" />
+
+            <Space
+                android:layout_width="175dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
