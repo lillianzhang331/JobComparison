@@ -43,8 +43,8 @@ public class MainMenu extends AppCompatActivity {
         makeComparison.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent goToCompare = new Intent(MainMenu.this, JobComparison.class);
-                startActivity(goToCompare);
+                Intent goToRanked = new Intent(MainMenu.this, RankedJobs.class);
+                startActivity(goToRanked);
             }
         });
     }

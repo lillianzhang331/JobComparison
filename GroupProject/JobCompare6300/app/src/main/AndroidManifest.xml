@@ -25,6 +25,8 @@
         </activity>
         <activity android:name=".JobComparison">
         </activity>
+        <activity android:name=".RankedJobs">
+        </activity>
     </application>
 
 </manifest>

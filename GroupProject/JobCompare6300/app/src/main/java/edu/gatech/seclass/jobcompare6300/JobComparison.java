@@ -26,8 +26,8 @@ public class JobComparison extends AppCompatActivity {
         compareAnother.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent goToCompare = new Intent(JobComparison.this, JobComparison.class);
-                startActivity(goToCompare);
+                Intent goToRankedJobs = new Intent(JobComparison.this, RankedJobs.class);
+                startActivity(goToRankedJobs);
                 JobComparison.this.finish();
             }
         });
