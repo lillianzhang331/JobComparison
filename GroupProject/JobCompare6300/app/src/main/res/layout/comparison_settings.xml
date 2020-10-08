@@ -35,7 +35,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="35dp" />
+            android:layout_height="23dp" />
 
         <TextView
             android:id="@+id/textView7"
@@ -313,7 +313,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="56dp" />
+            android:layout_height="44dp" />
 
         <Button
             android:id="@+id/returnToMainButtonID"
