@@ -45,6 +45,7 @@ public class JobOfferDetails extends AppCompatActivity {
                 JobOfferDetails.this.finish();
             }
         });
+
         /*Button offerSave = (Button) findViewById(R.id.offerSaveButtonID);
         offerSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +95,15 @@ public class JobOfferDetails extends AppCompatActivity {
         if (!isCityAllAlphabet){jobCity.setError("Invalid City Input");}
         if (!isStateAllAlphabet){jobState.setError("Invalid State Input");}
 
+        boolean allValidInput = validTitle & validCompany & validCity & validState & validCommute
+                & validSalary & validBonus & validRetirementBenefits & validLeaveTime
+                & isCityAllAlphabet & isStateAllAlphabet;
+
+        if (allValidInput){
+            Intent savedIntent = new Intent(JobOfferDetails.this, SavedJobOffer.class);
+            startActivity(savedIntent);
+            JobOfferDetails.this.finish();
+        }
     }
 
     // To check if all characters in string are alphabets
