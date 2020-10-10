@@ -60,7 +60,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("state", state);
         contentValues.put("costofliving",costofliving);
         contentValues.put("commute", commute);
-        contentValues.put("salary", state);
+        contentValues.put("salary", salary);
         contentValues.put("bonus", bonus);
         contentValues.put("retirementbenefits", retirementbenefits);
         contentValues.put("leavetime", leavetime);
@@ -96,7 +96,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("state", state);
         contentValues.put("costofliving",costofliving);
         contentValues.put("commute", commute);
-        contentValues.put("salary", state);
+        contentValues.put("salary", salary);
         contentValues.put("bonus", bonus);
         contentValues.put("retirementbenefits", retirementbenefits);
         contentValues.put("leavetime", leavetime);

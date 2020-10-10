@@ -114,6 +114,10 @@ public class CurrentJobDetails extends AppCompatActivity {
             else
                 dbHelper.insertCurrentJob(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
                         Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
+
+            Intent retToMain = new Intent(CurrentJobDetails.this, MainMenu.class);
+            startActivity(retToMain);
+            CurrentJobDetails.this.finish();
         }
     }
 
