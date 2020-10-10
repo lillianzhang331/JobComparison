@@ -244,8 +244,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal"
-                android:textSize="24sp" />
+                android:inputType="number"
+                android:textSize="24sp"
+                />
 
             <Space
                 android:layout_width="30sp"
@@ -285,7 +286,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned"
                 android:textSize="24sp" />
 
             <Space
@@ -356,7 +357,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:textSize="24sp" />
 
             <TextView
