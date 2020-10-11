@@ -59,13 +59,12 @@ public class CurrentJobDetails extends AppCompatActivity {
             jobCity.setText(job.getString(2));
             jobState.setText(job.getString(3));
             jobCostOfLiving.setText(job.getString(4));
-            jobCommute.setText(Long.toString(job.getLong(5)));
-            jobSalary.setText(Long.toString(job.getLong(6)));
-            jobBonus.setText(Long.toString(job.getLong(7)));
-            jobRetirementBenefits.setText(Integer.toString(job.getInt(8)));
-            jobLeaveTime.setText(Integer.toString(job.getInt(9)));
+            jobCommute.setText(job.getString(5));
+            jobSalary.setText(job.getString(6));
+            jobBonus.setText(job.getString(7));
+            jobRetirementBenefits.setText(job.getString(8));
+            jobLeaveTime.setText(job.getString(9));
         }
-
     }
     public void handleClickSaveCurrent (View view){
         String inputTitle = jobTitle.getText().toString();

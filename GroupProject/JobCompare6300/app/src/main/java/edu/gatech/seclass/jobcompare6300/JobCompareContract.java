@@ -17,4 +17,12 @@ public final class JobCompareContract {
         public static final String COLUMN_NAME_RETIREMENTBENEFITS = "retirementbenefits";
         public static final String COLUMN_NAME_LEAVETIME = "leavetime";
     }
+    public static class ComparisonSettings implements BaseColumns {
+        public static final String TABLE_NAME = "comparisonsettings";
+        public static final String COLUMN_NAME_COMMUTEWT = "commuteweight";
+        public static final String COLUMN_NAME_SALARYWT = "salaryweight";
+        public static final String COLUMN_NAME_BONUSWT = "bonusweight";
+        public static final String COLUMN_NAME_RETIREMENTWT = "retirementweight";
+        public static final String COLUMN_NAME_LEAVEWT = "leaveweight";
+    }
 }

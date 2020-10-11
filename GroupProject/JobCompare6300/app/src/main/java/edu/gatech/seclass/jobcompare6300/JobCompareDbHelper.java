@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class JobCompareDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "JobCompare.db";
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String CREATE_TABLE_CURRENTJOB =
             "CREATE TABLE " + JobCompareContract.CurrentJob.TABLE_NAME + " (" +
                     JobCompareContract.CurrentJob._ID + " INTEGER PRIMARY KEY," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_TITLE + " TEXT," +
@@ -24,23 +27,35 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
                     JobCompareContract.CurrentJob.COLUMN_NAME_RETIREMENTBENEFITS + " NUMBER," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_LEAVETIME + " NUMBER)";
 
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + JobCompareContract.CurrentJob.TABLE_NAME;
+    private static final String CREATE_TABLE_SETTINGS =
+            "CREATE TABLE " + JobCompareContract.ComparisonSettings.TABLE_NAME + " (" +
+                    JobCompareContract.ComparisonSettings._ID + " INTEGER PRIMARY KEY," +
+                    JobCompareContract.ComparisonSettings.COLUMN_NAME_COMMUTEWT + " NUMBER," +
+                    JobCompareContract.ComparisonSettings.COLUMN_NAME_SALARYWT + " NUMBER," +
+                    JobCompareContract.ComparisonSettings.COLUMN_NAME_BONUSWT + " NUMBER," +
+                    JobCompareContract.ComparisonSettings.COLUMN_NAME_RETIREMENTWT + " NUMBER," +
+                    JobCompareContract.ComparisonSettings.COLUMN_NAME_LEAVEWT + " NUMBER)";
 
+    private static final String DELETE_TABLE_CURRENTJOB =
+            "DROP TABLE IF EXISTS " + JobCompareContract.CurrentJob.TABLE_NAME;
+    private static final String DELETE_TABLE_SETTINGS =
+            "DROP TABLE IF EXISTS " + JobCompareContract.ComparisonSettings.TABLE_NAME;
     public JobCompareDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(CREATE_TABLE_CURRENTJOB);
+        db.execSQL(CREATE_TABLE_SETTINGS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(CREATE_TABLE_CURRENTJOB);
+        db.execSQL(CREATE_TABLE_SETTINGS);
         onCreate(db);
     }
 
@@ -103,6 +118,27 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
 
         db.update(JobCompareContract.CurrentJob.TABLE_NAME, contentValues, null, null);
 
+        return true;
+    }
+    public Cursor getSettings () {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select commuteweight, salaryweight, bonusweight, retirementweight, leaveweight from comparisonsettings", null );
+        return res;
+    }
+    public boolean saveSettings(Integer commutewt, Integer salarywt, Integer bonuswt, Integer retirementwt, Integer leavewt){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("commuteweight", commutewt);
+        contentValues.put("salaryweight", salarywt);
+        contentValues.put("bonusweight", bonuswt);
+        contentValues.put("retirementweight", retirementwt);
+        contentValues.put("leaveweight", leavewt);
+        Cursor res =  db.rawQuery( "select count(*) from comparisonsettings", null );
+        if (res.getInt(0) > 0)
+            db.update(JobCompareContract.ComparisonSettings.TABLE_NAME, contentValues, null, null);
+        else
+            db.insert(JobCompareContract.ComparisonSettings.TABLE_NAME, null,contentValues);
         return true;
     }
 }
