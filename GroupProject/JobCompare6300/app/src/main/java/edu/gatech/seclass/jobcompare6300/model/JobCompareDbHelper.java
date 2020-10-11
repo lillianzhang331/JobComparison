@@ -1,4 +1,4 @@
-package edu.gatech.seclass.jobcompare6300;
+package edu.gatech.seclass.jobcompare6300.model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,13 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class JobCompareDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
+
     public static final String DATABASE_NAME = "JobCompare.db";
+
     private static final String CREATE_TABLE_CURRENTJOB =
             "CREATE TABLE " + JobCompareContract.CurrentJob.TABLE_NAME + " (" +
                     JobCompareContract.CurrentJob._ID + " INTEGER PRIMARY KEY," +
@@ -25,7 +24,8 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
                     JobCompareContract.CurrentJob.COLUMN_NAME_SALARY + " NUMBER," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_BONUS + " NUMBER," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_RETIREMENTBENEFITS + " NUMBER," +
-                    JobCompareContract.CurrentJob.COLUMN_NAME_LEAVETIME + " NUMBER)";
+                    JobCompareContract.CurrentJob.COLUMN_NAME_LEAVETIME + " NUMBER," +
+                    JobCompareContract.CurrentJob.COLUMN_NAME_JOBSCORE + " NUMBER)";
 
     private static final String CREATE_TABLE_SETTINGS =
             "CREATE TABLE " + JobCompareContract.ComparisonSettings.TABLE_NAME + " (" +
@@ -38,8 +38,10 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
 
     private static final String DELETE_TABLE_CURRENTJOB =
             "DROP TABLE IF EXISTS " + JobCompareContract.CurrentJob.TABLE_NAME;
+
     private static final String DELETE_TABLE_SETTINGS =
             "DROP TABLE IF EXISTS " + JobCompareContract.ComparisonSettings.TABLE_NAME;
+
     public JobCompareDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -54,8 +56,8 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(CREATE_TABLE_CURRENTJOB);
-        db.execSQL(CREATE_TABLE_SETTINGS);
+        db.execSQL(DELETE_TABLE_CURRENTJOB);
+        db.execSQL(DELETE_TABLE_SETTINGS);
         onCreate(db);
     }
 
@@ -65,7 +67,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean insertCurrentJob (String title, String company, String city, String state, String costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public boolean createCurrentJob (String title, String company, String city, String state, String costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -125,6 +127,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         Cursor res =  db.rawQuery( "select commuteweight, salaryweight, bonusweight, retirementweight, leaveweight from comparisonsettings", null );
         return res;
     }
+
     public boolean saveSettings(Integer commutewt, Integer salarywt, Integer bonuswt, Integer retirementwt, Integer leavewt){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

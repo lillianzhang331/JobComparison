@@ -1,4 +1,4 @@
-package edu.gatech.seclass.jobcompare6300;
+package edu.gatech.seclass.jobcompare6300.model;
 
 import android.provider.BaseColumns;
 
@@ -16,6 +16,8 @@ public final class JobCompareContract {
         public static final String COLUMN_NAME_BONUS = "bonus";
         public static final String COLUMN_NAME_RETIREMENTBENEFITS = "retirementbenefits";
         public static final String COLUMN_NAME_LEAVETIME = "leavetime";
+        public static final String COLUMN_NAME_JOBSCORE = "jobscore";
+
     }
     public static class ComparisonSettings implements BaseColumns {
         public static final String TABLE_NAME = "comparisonsettings";

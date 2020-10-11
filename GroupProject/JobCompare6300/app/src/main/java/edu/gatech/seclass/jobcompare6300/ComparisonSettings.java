@@ -1,7 +1,6 @@
 package edu.gatech.seclass.jobcompare6300;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,8 +8,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
 
 public class ComparisonSettings extends AppCompatActivity {
     private SeekBar commuteWeight;

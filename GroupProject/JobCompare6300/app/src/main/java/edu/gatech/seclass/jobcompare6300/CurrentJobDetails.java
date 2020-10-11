@@ -9,6 +9,10 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
+import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+import edu.gatech.seclass.jobcompare6300.model.JobManager;
+
 public class CurrentJobDetails extends AppCompatActivity {
     private EditText jobTitle;
     private EditText jobCompany;
@@ -21,6 +25,7 @@ public class CurrentJobDetails extends AppCompatActivity {
     private EditText jobRetirementBenefits;
     private EditText jobLeaveTime;
     private JobCompareDbHelper dbHelper;
+    private JobManager job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +55,21 @@ public class CurrentJobDetails extends AppCompatActivity {
         });
 
         dbHelper = new JobCompareDbHelper(this);
-        if(dbHelper.isCurrentJobAvailable())
+        job = new JobManager(dbHelper);
+
+        if(job.isCurrentJobAvailable())
         {
-            Cursor job = dbHelper.getCurrentJob();
-            job.moveToFirst();
-            jobTitle.setText(job.getString(0));
-            jobCompany.setText(job.getString(1));
-            jobCity.setText(job.getString(2));
-            jobState.setText(job.getString(3));
-            jobCostOfLiving.setText(job.getString(4));
-            jobCommute.setText(job.getString(5));
-            jobSalary.setText(job.getString(6));
-            jobBonus.setText(job.getString(7));
-            jobRetirementBenefits.setText(job.getString(8));
-            jobLeaveTime.setText(job.getString(9));
+            CurrentJob cj = job.getCurrentJob();
+            jobTitle.setText(cj.getTitle());
+            jobCompany.setText(cj.getCompany());
+            jobCity.setText(cj.getCity());
+            jobState.setText(cj.getState());
+            jobCostOfLiving.setText(cj.getCostOfLiving());
+            jobCommute.setText(cj.getCommute().toString());
+            jobSalary.setText(cj.getSalary().toString());
+            jobBonus.setText(cj.getBonus().toString());
+            jobRetirementBenefits.setText(cj.getRetirementBenefits().toString());
+            jobLeaveTime.setText(cj.getLeaveTime().toString());
         }
     }
     public void handleClickSaveCurrent (View view){
@@ -107,12 +113,9 @@ public class CurrentJobDetails extends AppCompatActivity {
 
         if(validTitle && validCompany && validCity && validState && validCostOfLiving && validCommute && validSalary
                 && validBonus && validRetirementBenefits && validLeaveTime && isCityAllAlphabet && isStateAllAlphabet){
-            if(dbHelper.isCurrentJobAvailable())
-                dbHelper.updateCurrentJob(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
+
+            job.enterCurrentJob(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
                     Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
-            else
-                dbHelper.insertCurrentJob(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
-                        Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
 
             Intent retToMain = new Intent(CurrentJobDetails.this, MainMenu.class);
             startActivity(retToMain);
