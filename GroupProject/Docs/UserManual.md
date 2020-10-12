@@ -1,9 +1,9 @@
 # JobCompare6300
 ## Introduction
-JobCompare is an Andriod application that allows a user to make comparisons between a job offer and either their current job or another job offer. The user will have the option to adjust weights used in score calculations with attributes such as salary, benefits, and commute time.
+JobCompare is an Android application that allows a user to make comparisons between a job offer and either their current job or another job offer. The user will have the option to adjust weights used in score calculations with attributes such as salary, benefits, and commute time.
 
 #### Which devices does the mobile app support?
-The app can be installed on any mobile device that have Android(mobile phones) operating system (Andriod 9.0 Pie or later).
+The app can be installed on any mobile device that have Android(mobile phones) operating system (Android 9.0 Pie or later).
 
 ## How it works?
 On launching the app, the user is shown a **MainMenu** from where the user can choose to do the following.
@@ -40,14 +40,18 @@ Each input field of the user entry screen for Current Job and Job Offer are vali
 
 ## App Overview
 
-The SDP Encryptor is a multi screen app and below are the images of the different screens of the app. The images are sequenced as per the typical usage of the app.
+The JobCompare6300 is a multi screen app and below are the images of the different screens of the app. The images are sequenced as per the typical usage of the app.
 
 ![Main Menu](./images/mainmenu.png)
 
-![Current Job](./images/currentjob.png)
+![Current Job](./images/entercurrentjob.png)
 
-![Job Offer](./images/joboffer.png)
+![Job Offer](./images/enterjoboffer.png)
+
+![View Job Offer](./images/viewjoboffer.png)
 
 ![Comparison Settings](./images/settings.png)
 
-![Compare Job](./images/comparejob.png)
+![Compare Jobs](./images/comparisonselection.png)
+
+![Compare Jobs](./images/viewcomparison.png)
