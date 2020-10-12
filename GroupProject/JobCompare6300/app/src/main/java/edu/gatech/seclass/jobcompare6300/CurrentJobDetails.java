@@ -1,12 +1,17 @@
 package edu.gatech.seclass.jobcompare6300;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
+import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+import edu.gatech.seclass.jobcompare6300.model.JobManager;
 
 public class CurrentJobDetails extends AppCompatActivity {
     private EditText jobTitle;
@@ -19,6 +24,8 @@ public class CurrentJobDetails extends AppCompatActivity {
     private EditText jobBonus;
     private EditText jobRetirementBenefits;
     private EditText jobLeaveTime;
+    private JobCompareDbHelper dbHelper;
+    private JobManager job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,24 @@ public class CurrentJobDetails extends AppCompatActivity {
                 CurrentJobDetails.this.finish();
             }
         });
+
+        dbHelper = new JobCompareDbHelper(this);
+        job = new JobManager(dbHelper);
+
+        if(job.isCurrentJobAvailable())
+        {
+            CurrentJob cj = job.getCurrentJob();
+            jobTitle.setText(cj.getTitle());
+            jobCompany.setText(cj.getCompany());
+            jobCity.setText(cj.getCity());
+            jobState.setText(cj.getState());
+            jobCostOfLiving.setText(cj.getCostOfLiving());
+            jobCommute.setText(cj.getCommute().toString());
+            jobSalary.setText(cj.getSalary().toString());
+            jobBonus.setText(cj.getBonus().toString());
+            jobRetirementBenefits.setText(cj.getRetirementBenefits().toString());
+            jobLeaveTime.setText(cj.getLeaveTime().toString());
+        }
     }
     public void handleClickSaveCurrent (View view){
         String inputTitle = jobTitle.getText().toString();
@@ -86,6 +111,16 @@ public class CurrentJobDetails extends AppCompatActivity {
         if (!isCityAllAlphabet){jobCity.setError("Invalid City Input");}
         if (!isStateAllAlphabet){jobState.setError("Invalid State Input");}
 
+        if(validTitle && validCompany && validCity && validState && validCostOfLiving && validCommute && validSalary
+                && validBonus && validRetirementBenefits && validLeaveTime && isCityAllAlphabet && isStateAllAlphabet){
+
+            job.enterCurrentJob(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
+                    Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
+
+            Intent retToMain = new Intent(CurrentJobDetails.this, MainMenu.class);
+            startActivity(retToMain);
+            CurrentJobDetails.this.finish();
+        }
     }
 
     // To check if all characters in string are alphabets
