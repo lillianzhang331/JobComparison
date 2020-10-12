@@ -42,16 +42,16 @@ Each input field of the user entry screen for Current Job and Job Offer are vali
 
 The JobCompare6300 is a multi screen app and below are the images of the different screens of the app. The images are sequenced as per the typical usage of the app.
 
-![Main Menu](./images/mainmenu.png)
+![Main Menu](./Images/mainmenu.png)
 
-![Current Job](./images/entercurrentjob.png)
+![Current Job](./Images/entercurrentjob.png)
 
-![Job Offer](./images/enterjoboffer.png)
+![Job Offer](./Images/enterjoboffer.png)
 
-![View Job Offer](./images/viewjoboffer.png)
+![View Job Offer](./Images/viewjoboffer.png)
 
-![Comparison Settings](./images/settings.png)
+![Comparison Settings](./Images/settings.png)
 
-![Compare Jobs](./images/comparisonselection.png)
+![Compare Jobs](./Images/comparisonselection.png)
 
-![Compare Jobs](./images/viewcomparison.png)
+![View Comparison](./Images/viewcomparison.png)
