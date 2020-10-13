@@ -81,6 +81,14 @@ public class JobOfferDetails extends AppCompatActivity {
 
         boolean isCityAllAlphabet = isAlpha(inputCity);
         boolean isStateAllAlphabet = isAlpha(inputState);
+        boolean isCostNumber = isNumberUserDefined(inputCostOfLiving);
+        boolean isCommuteNumber = isNumberUserDefined(inputCommute);
+        boolean isSalaryNumber = isNumberUserDefined(inputSalary);
+        boolean isBonusNumber = isNumberUserDefined(inputBonus);
+        boolean isBenefitsNumber = isNumberUserDefined(inputRetirementBenefits);
+        boolean isLeaveNumber = isNumberUserDefined(inputLeaveTime);
+
+
 
         if (!validTitle){jobTitle.setError("No Title Input");}
         if (!validCompany){jobCompany.setError("No Company Input");}
@@ -95,9 +103,17 @@ public class JobOfferDetails extends AppCompatActivity {
         if (!isCityAllAlphabet){jobCity.setError("Invalid City Input");}
         if (!isStateAllAlphabet){jobState.setError("Invalid State Input");}
 
+        if(!isCostNumber){jobCostOfLiving.setError("Invalid Cost of Living Index Input");}
+        if(!isCommuteNumber){jobCommute.setError("Invalid Commute Input");}
+        if(!isSalaryNumber){jobSalary.setError("Invalid Salary Input");}
+        if(!isBonusNumber){jobBonus.setError("Invalid Bonus Input");}
+        if(!isBenefitsNumber){jobRetirementBenefits.setError("Invalid Benefits Input");}
+        if(!isLeaveNumber){jobLeaveTime.setError("Invalid Leave Time Input");}
+
         boolean allValidInput = validTitle & validCompany & validCity & validState & validCommute
                 & validSalary & validBonus & validRetirementBenefits & validLeaveTime
-                & isCityAllAlphabet & isStateAllAlphabet;
+                & isCityAllAlphabet & isStateAllAlphabet & isCostNumber & isCommuteNumber
+                & isSalaryNumber & isBonusNumber & isBenefitsNumber & isLeaveNumber;
 
         if (allValidInput){
             Intent savedIntent = new Intent(JobOfferDetails.this, SavedJobOffer.class);
@@ -111,5 +127,13 @@ public class JobOfferDetails extends AppCompatActivity {
         return name.matches("^[a-zA-Z\\s\\-\']*$");
     }
 
+    public boolean isNumberUserDefined(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
 
 }
