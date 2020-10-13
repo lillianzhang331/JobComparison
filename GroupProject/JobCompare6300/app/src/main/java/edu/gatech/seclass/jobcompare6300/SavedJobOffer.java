@@ -4,19 +4,48 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+import edu.gatech.seclass.jobcompare6300.model.JobManager;
+import edu.gatech.seclass.jobcompare6300.model.JobOffer;
+
 public class SavedJobOffer extends AppCompatActivity {
+    private TextView jobTitle;
+    private TextView jobCompany;
+    private TextView jobCity;
+    private TextView jobState;
+    private TextView jobCostOfLiving;
+    private TextView jobCommute;
+    private TextView jobSalary;
+    private TextView jobBonus;
+    private TextView jobRetirementBenefits;
+    private TextView jobLeaveTime;
+    private JobCompareDbHelper dbHelper;
+    private JobManager job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saved_job_offer);
 
+        jobTitle = (TextView) findViewById(R.id.offerTitleID);
+        jobCompany = (TextView) findViewById(R.id.offerCompanyID);
+        jobCity = (TextView) findViewById(R.id.offerCityID);
+        jobState = (TextView) findViewById(R.id.offerStateID);
+        jobCostOfLiving = (TextView) findViewById(R.id.offerCostID);
+        jobCommute = (TextView) findViewById(R.id.offerCommuteID);
+        jobSalary = (TextView) findViewById(R.id.offerSalaryID);
+        jobBonus = (TextView) findViewById(R.id.offerBonusID);
+        jobRetirementBenefits = (TextView) findViewById(R.id.offerRetirementID);
+        jobLeaveTime = (TextView) findViewById(R.id.offerLeaveID);
+
         Button compareWithCurrent = (Button) findViewById(R.id.compareCurrentButtonID);
         Button enterAnotherOffer = (Button) findViewById(R.id.enterAnotherOfferButtonID);
         Button returnToMain = (Button) findViewById(R.id.returnToMainButtonID);
+
         returnToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,5 +70,21 @@ public class SavedJobOffer extends AppCompatActivity {
                 SavedJobOffer.this.finish();
             }
         });
+
+        dbHelper = new JobCompareDbHelper(this);
+        job = new JobManager(dbHelper);
+
+        JobOffer jo = job.getLastJobOffer();
+        jobTitle.setText(jo.getTitle());
+        jobCompany.setText(jo.getCompany());
+        jobCity.setText(jo.getCity());
+        jobState.setText(jo.getState());
+        jobCostOfLiving.setText(jo.getCostOfLiving());
+        jobCommute.setText(jo.getCommute().toString());
+        jobSalary.setText(jo.getSalary().toString());
+        jobBonus.setText(jo.getBonus().toString());
+        jobRetirementBenefits.setText(jo.getRetirementBenefits().toString());
+        jobLeaveTime.setText(jo.getLeaveTime().toString());
+
     }
 }

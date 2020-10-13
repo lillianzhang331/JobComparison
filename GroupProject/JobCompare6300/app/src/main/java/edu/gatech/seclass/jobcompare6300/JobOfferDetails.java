@@ -8,6 +8,9 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+import edu.gatech.seclass.jobcompare6300.model.JobManager;
+
 public class JobOfferDetails extends AppCompatActivity {
     private EditText jobTitle;
     private EditText jobCompany;
@@ -19,6 +22,8 @@ public class JobOfferDetails extends AppCompatActivity {
     private EditText jobBonus;
     private EditText jobRetirementBenefits;
     private EditText jobLeaveTime;
+    private JobCompareDbHelper dbHelper;
+    private JobManager job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,9 @@ public class JobOfferDetails extends AppCompatActivity {
                 JobOfferDetails.this.finish();
             }
         });
+
+        dbHelper = new JobCompareDbHelper(this);
+        job = new JobManager(dbHelper);
 
         /*Button offerSave = (Button) findViewById(R.id.offerSaveButtonID);
         offerSave.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +89,14 @@ public class JobOfferDetails extends AppCompatActivity {
 
         boolean isCityAllAlphabet = isAlpha(inputCity);
         boolean isStateAllAlphabet = isAlpha(inputState);
+        boolean isCostNumber = isNumberUserDefined(inputCostOfLiving);
+        boolean isCommuteNumber = isNumberUserDefined(inputCommute);
+        boolean isSalaryNumber = isNumberUserDefined(inputSalary);
+        boolean isBonusNumber = isNumberUserDefined(inputBonus);
+        boolean isBenefitsNumber = isNumberUserDefined(inputRetirementBenefits);
+        boolean isLeaveNumber = isNumberUserDefined(inputLeaveTime);
+
+
 
         if (!validTitle){jobTitle.setError("No Title Input");}
         if (!validCompany){jobCompany.setError("No Company Input");}
@@ -95,11 +111,23 @@ public class JobOfferDetails extends AppCompatActivity {
         if (!isCityAllAlphabet){jobCity.setError("Invalid City Input");}
         if (!isStateAllAlphabet){jobState.setError("Invalid State Input");}
 
+        if(!isCostNumber){jobCostOfLiving.setError("Invalid Cost of Living Index Input");}
+        if(!isCommuteNumber){jobCommute.setError("Invalid Commute Input");}
+        if(!isSalaryNumber){jobSalary.setError("Invalid Salary Input");}
+        if(!isBonusNumber){jobBonus.setError("Invalid Bonus Input");}
+        if(!isBenefitsNumber){jobRetirementBenefits.setError("Invalid Benefits Input");}
+        if(!isLeaveNumber){jobLeaveTime.setError("Invalid Leave Time Input");}
+
         boolean allValidInput = validTitle & validCompany & validCity & validState & validCommute
                 & validSalary & validBonus & validRetirementBenefits & validLeaveTime
-                & isCityAllAlphabet & isStateAllAlphabet;
+                & isCityAllAlphabet & isStateAllAlphabet & isCostNumber & isCommuteNumber
+                & isSalaryNumber & isBonusNumber & isBenefitsNumber & isLeaveNumber;
 
         if (allValidInput){
+
+            job.enterJobOffer(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
+                    Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
+
             Intent savedIntent = new Intent(JobOfferDetails.this, SavedJobOffer.class);
             startActivity(savedIntent);
             JobOfferDetails.this.finish();
@@ -111,5 +139,13 @@ public class JobOfferDetails extends AppCompatActivity {
         return name.matches("^[a-zA-Z\\s\\-\']*$");
     }
 
+    public boolean isNumberUserDefined(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
 
 }

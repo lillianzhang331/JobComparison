@@ -27,6 +27,21 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
                     JobCompareContract.CurrentJob.COLUMN_NAME_LEAVETIME + " NUMBER," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_JOBSCORE + " NUMBER)";
 
+    private static final String CREATE_TABLE_JOBOFFER =
+            "CREATE TABLE " + JobCompareContract.JobOffer.TABLE_NAME + " (" +
+                    JobCompareContract.JobOffer._ID + " INTEGER PRIMARY KEY," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_TITLE + " TEXT," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_COMPANY + " TEXT," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_CITY + " TEXT," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_STATE + " TEXT," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_COSTOFLIVING + " TEXT," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_COMMUTE + " NUMBER," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_SALARY + " NUMBER," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_BONUS + " NUMBER," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_RETIREMENTBENEFITS + " NUMBER," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_LEAVETIME + " NUMBER," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_JOBSCORE + " NUMBER)";
+
     private static final String CREATE_TABLE_SETTINGS =
             "CREATE TABLE " + JobCompareContract.ComparisonSettings.TABLE_NAME + " (" +
                     JobCompareContract.ComparisonSettings._ID + " INTEGER PRIMARY KEY," +
@@ -39,6 +54,9 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     private static final String DELETE_TABLE_CURRENTJOB =
             "DROP TABLE IF EXISTS " + JobCompareContract.CurrentJob.TABLE_NAME;
 
+    private static final String DELETE_TABLE_JOBOFFER =
+            "DROP TABLE IF EXISTS " + JobCompareContract.JobOffer.TABLE_NAME;
+
     private static final String DELETE_TABLE_SETTINGS =
             "DROP TABLE IF EXISTS " + JobCompareContract.ComparisonSettings.TABLE_NAME;
 
@@ -49,6 +67,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_CURRENTJOB);
+        db.execSQL(CREATE_TABLE_JOBOFFER);
         db.execSQL(CREATE_TABLE_SETTINGS);
     }
 
@@ -57,6 +76,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         db.execSQL(DELETE_TABLE_CURRENTJOB);
+//        db.execSQL(DELETE_TABLE_JOBOFFER);
         db.execSQL(DELETE_TABLE_SETTINGS);
         onCreate(db);
     }
@@ -84,6 +104,33 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
 
         db.insert(JobCompareContract.CurrentJob.TABLE_NAME, null, contentValues);
         return true;
+    }
+
+    public boolean addJobOffer (String title, String company, String city, String state, String costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("title", title);
+        contentValues.put("company", company);
+        contentValues.put("city", city);
+        contentValues.put("state", state);
+        contentValues.put("costofliving",costofliving);
+        contentValues.put("commute", commute);
+        contentValues.put("salary", salary);
+        contentValues.put("bonus", bonus);
+        contentValues.put("retirementbenefits", retirementbenefits);
+        contentValues.put("leavetime", leavetime);
+
+        long id = db.insert(JobCompareContract.JobOffer.TABLE_NAME, null, contentValues);
+        return true;
+    }
+
+    public Cursor getLastJobOffer () {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select max(rowid) from joboffer", null);
+        int lastID = res.getInt(0);
+        res = db.rawQuery("select title, company, city, state, costofliving, commute, salary, bonus, retirementbenefits, leavetime from joboffer where rowid=?", new String[]{String.valueOf(lastID)});
+        return res;
     }
 
     public boolean isCurrentJobAvailable () {
@@ -122,6 +169,15 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
 
         return true;
     }
+
+    public boolean isSettingsAvailable () {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select count(*) from comparisonsettings", null );
+        res.moveToFirst();
+        int count = res.getInt(0);
+        return count > 0;
+    }
+
     public Cursor getSettings () {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select commuteweight, salaryweight, bonusweight, retirementweight, leaveweight from comparisonsettings", null );
@@ -138,10 +194,12 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("retirementweight", retirementwt);
         contentValues.put("leaveweight", leavewt);
         Cursor res =  db.rawQuery( "select count(*) from comparisonsettings", null );
+        res.moveToFirst();
         if (res.getInt(0) > 0)
             db.update(JobCompareContract.ComparisonSettings.TABLE_NAME, contentValues, null, null);
         else
             db.insert(JobCompareContract.ComparisonSettings.TABLE_NAME, null,contentValues);
+        res.close();
         return true;
     }
 }

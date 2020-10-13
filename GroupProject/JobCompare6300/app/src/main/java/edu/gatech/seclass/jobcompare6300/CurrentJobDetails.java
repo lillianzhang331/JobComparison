@@ -72,6 +72,7 @@ public class CurrentJobDetails extends AppCompatActivity {
             jobLeaveTime.setText(cj.getLeaveTime().toString());
         }
     }
+
     public void handleClickSaveCurrent (View view){
         String inputTitle = jobTitle.getText().toString();
         String inputCompany = jobCompany.getText().toString();
@@ -97,6 +98,12 @@ public class CurrentJobDetails extends AppCompatActivity {
 
         boolean isCityAllAlphabet = isAlpha(inputCity);
         boolean isStateAllAlphabet = isAlpha(inputState);
+        boolean isCostNumber = isNumberUserDefined(inputCostOfLiving);
+        boolean isCommuteNumber = isNumberUserDefined(inputCommute);
+        boolean isSalaryNumber = isNumberUserDefined(inputSalary);
+        boolean isBonusNumber = isNumberUserDefined(inputBonus);
+        boolean isBenefitsNumber = isNumberUserDefined(inputRetirementBenefits);
+        boolean isLeaveNumber = isNumberUserDefined(inputLeaveTime);
 
         if (!validTitle){jobTitle.setError("No Title Input");}
         if (!validCompany){jobCompany.setError("No Company Input");}
@@ -111,9 +118,18 @@ public class CurrentJobDetails extends AppCompatActivity {
         if (!isCityAllAlphabet){jobCity.setError("Invalid City Input");}
         if (!isStateAllAlphabet){jobState.setError("Invalid State Input");}
 
-        if(validTitle && validCompany && validCity && validState && validCostOfLiving && validCommute && validSalary
-                && validBonus && validRetirementBenefits && validLeaveTime && isCityAllAlphabet && isStateAllAlphabet){
+        if(!isCostNumber){jobCostOfLiving.setError("Invalid Cost of Living Index Input");}
+        if(!isCommuteNumber){jobCommute.setError("Invalid Commute Input");}
+        if(!isSalaryNumber){jobSalary.setError("Invalid Salary Input");}
+        if(!isBonusNumber){jobBonus.setError("Invalid Bonus Input");}
+        if(!isBenefitsNumber){jobRetirementBenefits.setError("Invalid Benefits Input");}
+        if(!isLeaveNumber){jobLeaveTime.setError("Invalid Leave Time Input");}
 
+        if(validTitle && validCompany && validCity && validState && validCostOfLiving
+                && validCommute && validSalary && validBonus && validRetirementBenefits
+                && validLeaveTime && isCityAllAlphabet && isStateAllAlphabet && isCostNumber
+                && isCommuteNumber && isSalaryNumber && isBonusNumber && isBenefitsNumber
+                && isLeaveNumber){
             job.enterCurrentJob(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
                     Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
 
@@ -126,6 +142,15 @@ public class CurrentJobDetails extends AppCompatActivity {
     // To check if all characters in string are alphabets
     public boolean isAlpha(String name) {
         return name.matches("^[a-zA-Z\\s\\-\']*$");
+    }
+
+    public boolean isNumberUserDefined(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
 }

@@ -51,15 +51,40 @@ public class JobManager {
 
     public void enterJobOffer(String inputTitle, String inputCompany, String inputCity, String inputState, String inputCostOfLiving,
                               float inputCommute, float inputSalary, float inputBonus, int inputRetirementBenefits, int inputLeaveTime){
+        JobOffer jo = new JobOffer(dbHelper);
+        jo.setTitle(inputTitle);
+        jo.setCompany(inputCompany);
+        jo.setCity(inputCity);
+        jo.setState(inputState);
+        jo.setCostOfLiving(inputCostOfLiving);
+        jo.setCommute(inputCommute);
+        jo.setSalary(inputSalary);
+        jo.setBonus(inputBonus);
+        jo.setRetirementBenefits(inputRetirementBenefits);
+        jo.setLeaveTime(inputLeaveTime);
+        jo.save();
+    }
 
+    public JobOffer getLastJobOffer() {
+        Cursor job = dbHelper.getLastJobOffer();
+        job.moveToFirst();
+        JobOffer jo = new JobOffer(dbHelper);
+
+        jo.setTitle(job.getString(0));
+        jo.setCompany(job.getString(1));
+        jo.setCity(job.getString(2));
+        jo.setState(job.getString(3));
+        jo.setCostOfLiving(job.getString(4));
+        jo.setCommute(job.getFloat(5));
+        jo.setSalary(job.getFloat(6));
+        jo.setBonus(job.getFloat(7));
+        jo.setRetirementBenefits(job.getInt(8));
+        jo.setLeaveTime(job.getInt(9));
+
+        return jo;
     }
 
     public void compareJobOffers(){
 
     }
-
-    public void adjustComparisionSettings(){
-
-    }
-
 }
