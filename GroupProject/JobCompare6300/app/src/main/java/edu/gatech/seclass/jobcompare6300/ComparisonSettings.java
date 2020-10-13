@@ -8,6 +8,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.gatech.seclass.jobcompare6300.model.ComparisonSettingsModel;
 import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
 
 public class ComparisonSettings extends AppCompatActivity {
@@ -16,9 +17,9 @@ public class ComparisonSettings extends AppCompatActivity {
     private SeekBar bonusWeight;
     private SeekBar retirementWeight;
     private SeekBar leaveWeight;
-    private MyApplication myApplication;
-    private JobCompareDbHelper dbHelper;
-
+    //private MyApplication myApplication;
+    private JobCompareDbHelper settingsDb;
+    private ComparisonSettingsModel settings;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comparison_settings);
@@ -28,19 +29,28 @@ public class ComparisonSettings extends AppCompatActivity {
         bonusWeight = (SeekBar) findViewById(R.id.bonusWeightID);
         retirementWeight = (SeekBar) findViewById(R.id.retirementWeightID);
         leaveWeight = (SeekBar) findViewById(R.id.leaveWeightID);
-        myApplication = (MyApplication)getApplication();
+       /* myApplication = (MyApplication)getApplication();
 
         commuteWeight.setProgress(myApplication.getCommuteWeight());
         salaryWeight.setProgress(myApplication.getSalaryWeight());
         bonusWeight.setProgress(myApplication.getBonusWeight());
         retirementWeight.setProgress(myApplication.getRetirementbenefitsWeight());
-        leaveWeight.setProgress(myApplication.getLeaveWeight());
+        leaveWeight.setProgress(myApplication.getLeaveWeight());*/
+
+        settingsDb = new JobCompareDbHelper(this);
+        settings = new ComparisonSettingsModel(settingsDb);
+
+        commuteWeight.setProgress(settings.getCommuteWeight());
+        salaryWeight.setProgress(settings.getSalaryWeight());
+        bonusWeight.setProgress(settings.getBonusWeight());
+        retirementWeight.setProgress(settings.getRetirementbenefitsWeight());
+        leaveWeight.setProgress(settings.getLeaveWeight());
 
         Button returnToMain = (Button) findViewById(R.id.returnToMainButtonID);
         returnToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myApplication.adjustSettings(commuteWeight.getProgress(),
+                settings.setComparisonSettings(commuteWeight.getProgress(),
                         salaryWeight.getProgress(),bonusWeight.getProgress(),
                         retirementWeight.getProgress(),leaveWeight.getProgress());
                 Intent retToMain = new Intent(ComparisonSettings.this, MainMenu.class);

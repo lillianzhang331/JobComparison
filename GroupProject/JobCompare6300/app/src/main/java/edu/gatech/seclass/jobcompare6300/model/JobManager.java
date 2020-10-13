@@ -57,9 +57,4 @@ public class JobManager {
     public void compareJobOffers(){
 
     }
-
-    public void adjustComparisionSettings(){
-
-    }
-
 }

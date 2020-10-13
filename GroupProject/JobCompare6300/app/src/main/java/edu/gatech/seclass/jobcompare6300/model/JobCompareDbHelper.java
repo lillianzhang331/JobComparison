@@ -122,6 +122,15 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
 
         return true;
     }
+
+    public boolean isSettingsAvailable () {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select count(*) from comparisonsettings", null );
+        res.moveToFirst();
+        int count = res.getInt(0);
+        return count > 0;
+    }
+
     public Cursor getSettings () {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select commuteweight, salaryweight, bonusweight, retirementweight, leaveweight from comparisonsettings", null );
@@ -138,10 +147,12 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("retirementweight", retirementwt);
         contentValues.put("leaveweight", leavewt);
         Cursor res =  db.rawQuery( "select count(*) from comparisonsettings", null );
+        res.moveToFirst();
         if (res.getInt(0) > 0)
             db.update(JobCompareContract.ComparisonSettings.TABLE_NAME, contentValues, null, null);
         else
             db.insert(JobCompareContract.ComparisonSettings.TABLE_NAME, null,contentValues);
+        res.close();
         return true;
     }
 }
