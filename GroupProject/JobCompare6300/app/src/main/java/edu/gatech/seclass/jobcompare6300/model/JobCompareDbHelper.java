@@ -128,6 +128,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     public Cursor getLastJobOffer () {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("select max(rowid) from joboffer", null);
+        res.moveToFirst();
         int lastID = res.getInt(0);
         res = db.rawQuery("select title, company, city, state, costofliving, commute, salary, bonus, retirementbenefits, leavetime from joboffer where rowid=?", new String[]{String.valueOf(lastID)});
         return res;
