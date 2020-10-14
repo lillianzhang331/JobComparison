@@ -19,7 +19,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
                     JobCompareContract.CurrentJob.COLUMN_NAME_COMPANY + " TEXT," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_CITY + " TEXT," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_STATE + " TEXT," +
-                    JobCompareContract.CurrentJob.COLUMN_NAME_COSTOFLIVING + " TEXT," +
+                    JobCompareContract.CurrentJob.COLUMN_NAME_COSTOFLIVING + " NUMBER," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_COMMUTE + " NUMBER," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_SALARY + " NUMBER," +
                     JobCompareContract.CurrentJob.COLUMN_NAME_BONUS + " NUMBER," +
@@ -34,7 +34,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
                     JobCompareContract.JobOffer.COLUMN_NAME_COMPANY + " TEXT," +
                     JobCompareContract.JobOffer.COLUMN_NAME_CITY + " TEXT," +
                     JobCompareContract.JobOffer.COLUMN_NAME_STATE + " TEXT," +
-                    JobCompareContract.JobOffer.COLUMN_NAME_COSTOFLIVING + " TEXT," +
+                    JobCompareContract.JobOffer.COLUMN_NAME_COSTOFLIVING + " NUMBER," +
                     JobCompareContract.JobOffer.COLUMN_NAME_COMMUTE + " NUMBER," +
                     JobCompareContract.JobOffer.COLUMN_NAME_SALARY + " NUMBER," +
                     JobCompareContract.JobOffer.COLUMN_NAME_BONUS + " NUMBER," +
@@ -87,7 +87,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean createCurrentJob (String title, String company, String city, String state, String costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public boolean createCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -106,7 +106,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean addJobOffer (String title, String company, String city, String state, String costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public boolean addJobOffer (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -150,7 +150,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    public boolean updateCurrentJob (String title, String company, String city, String state, String costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public boolean updateCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 

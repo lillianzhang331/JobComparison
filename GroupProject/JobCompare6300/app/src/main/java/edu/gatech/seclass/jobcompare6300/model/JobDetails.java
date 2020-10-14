@@ -9,7 +9,7 @@ public abstract class JobDetails {
     String company;
     String city;
     String state;
-    String costOfLiving;
+    Integer costOfLiving;
     Float commute;
     Float salary;
     Float bonus;
@@ -48,11 +48,11 @@ public abstract class JobDetails {
         this.state = state;
     }
 
-    public String getCostOfLiving() {
+    public Integer getCostOfLiving() {
         return costOfLiving;
     }
 
-    public void setCostOfLiving(String costOfLiving) {
+    public void setCostOfLiving(Integer costOfLiving) {
         this.costOfLiving = costOfLiving;
     }
 

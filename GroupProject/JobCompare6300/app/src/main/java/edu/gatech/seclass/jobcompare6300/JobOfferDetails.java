@@ -125,7 +125,7 @@ public class JobOfferDetails extends AppCompatActivity {
 
         if (allValidInput){
 
-            job.enterJobOffer(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
+            job.enterJobOffer(inputTitle, inputCompany, inputCity, inputState, Integer.parseInt(inputCostOfLiving), Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
                     Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
 
             Intent savedIntent = new Intent(JobOfferDetails.this, SavedJobOffer.class);

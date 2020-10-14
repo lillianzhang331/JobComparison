@@ -14,8 +14,8 @@ public class JobManager {
         return dbHelper.isCurrentJobAvailable();
     }
 
-    public void enterCurrentJob(String inputTitle, String inputCompany, String inputCity, String inputState, String inputCostOfLiving,
-                                float inputCommute, float inputSalary, float inputBonus, int inputRetirementBenefits, int inputLeaveTime){
+    public void enterCurrentJob(String inputTitle, String inputCompany, String inputCity, String inputState, Integer inputCostOfLiving,
+                                Float inputCommute, Float inputSalary, Float inputBonus, Integer inputRetirementBenefits, Integer inputLeaveTime){
         CurrentJob cj = new CurrentJob(dbHelper);
         cj.setTitle(inputTitle);
         cj.setCompany(inputCompany);
@@ -39,7 +39,7 @@ public class JobManager {
         cj.setCompany(job.getString(1));
         cj.setCity(job.getString(2));
         cj.setState(job.getString(3));
-        cj.setCostOfLiving(job.getString(4));
+        cj.setCostOfLiving(job.getInt(4));
         cj.setCommute(job.getFloat(5));
         cj.setSalary(job.getFloat(6));
         cj.setBonus(job.getFloat(7));
@@ -49,8 +49,8 @@ public class JobManager {
         return cj;
     }
 
-    public void enterJobOffer(String inputTitle, String inputCompany, String inputCity, String inputState, String inputCostOfLiving,
-                              float inputCommute, float inputSalary, float inputBonus, int inputRetirementBenefits, int inputLeaveTime){
+    public void enterJobOffer(String inputTitle, String inputCompany, String inputCity, String inputState, Integer inputCostOfLiving,
+                              Float inputCommute, Float inputSalary, Float inputBonus, Integer inputRetirementBenefits, Integer inputLeaveTime){
         JobOffer jo = new JobOffer(dbHelper);
         jo.setTitle(inputTitle);
         jo.setCompany(inputCompany);
@@ -74,7 +74,7 @@ public class JobManager {
         jo.setCompany(job.getString(1));
         jo.setCity(job.getString(2));
         jo.setState(job.getString(3));
-        jo.setCostOfLiving(job.getString(4));
+        jo.setCostOfLiving(job.getInt(4));
         jo.setCommute(job.getFloat(5));
         jo.setSalary(job.getFloat(6));
         jo.setBonus(job.getFloat(7));
