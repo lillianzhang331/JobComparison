@@ -99,7 +99,7 @@ public class CurrentJobDetails extends AppCompatActivity {
         boolean isCityAllAlphabet = isAlpha(inputCity);
         boolean isStateAllAlphabet = isAlpha(inputState);
         boolean isCostNumber = isInteger(inputCostOfLiving);
-        boolean isCommuteNumber = isInteger(inputCommute);
+        boolean isCommuteNumber = isFloat(inputCommute);
         boolean isSalaryNumber = isFloat(inputSalary);
         boolean isBonusNumber = isFloat(inputBonus);
         boolean isBenefitsNumber = isInteger(inputRetirementBenefits);
@@ -130,8 +130,10 @@ public class CurrentJobDetails extends AppCompatActivity {
                 && validLeaveTime && isCityAllAlphabet && isStateAllAlphabet && isCostNumber
                 && isCommuteNumber && isSalaryNumber && isBonusNumber && isBenefitsNumber
                 && isLeaveNumber){
-            job.enterCurrentJob(inputTitle, inputCompany, inputCity, inputState, Integer.parseInt(inputCostOfLiving), Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
-                    Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
+            job.enterCurrentJob(inputTitle, inputCompany, inputCity, inputState,
+                    Integer.parseInt(inputCostOfLiving), Float.parseFloat(inputCommute),
+                    Float.parseFloat(inputSalary), Float.parseFloat(inputBonus),
+                    Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
 
             Intent retToMain = new Intent(CurrentJobDetails.this, MainMenu.class);
             startActivity(retToMain);

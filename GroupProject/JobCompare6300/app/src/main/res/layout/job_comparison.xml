@@ -76,13 +76,38 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/job1title2"
+                        android:id="@+id/job1company"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/job2title2"
+                        android:id="@+id/job2company"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="10sp">
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cost Of Living"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/job1cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/job2cost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
@@ -101,13 +126,13 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/job1title3"
+                        android:id="@+id/job1location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/job2title3"
+                        android:id="@+id/job2location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
@@ -126,13 +151,13 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/job1title8"
+                        android:id="@+id/job1commute"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/job2title8"
+                        android:id="@+id/job2commute"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
@@ -151,13 +176,13 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/job1title7"
+                        android:id="@+id/job1salary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/job2title7"
+                        android:id="@+id/job2salary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
@@ -176,13 +201,13 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/job1title6"
+                        android:id="@+id/job1bonus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/job2title6"
+                        android:id="@+id/job2bonus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
@@ -201,13 +226,13 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/job1title5"
+                        android:id="@+id/job1benefits"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/job2title5"
+                        android:id="@+id/job2benefits"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
@@ -226,13 +251,13 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/job1title4"
+                        android:id="@+id/job1leave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
 
                     <TextView
-                        android:id="@+id/job2title4"
+                        android:id="@+id/job2leave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="24sp" />
@@ -243,7 +268,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="59dp" />
+            android:layout_height="40dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
