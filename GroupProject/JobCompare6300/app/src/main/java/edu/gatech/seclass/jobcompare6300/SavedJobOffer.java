@@ -24,8 +24,6 @@ public class SavedJobOffer extends AppCompatActivity {
     private TextView jobBonus;
     private TextView jobRetirementBenefits;
     private TextView jobLeaveTime;
-    private JobCompareDbHelper dbHelper;
-    private JobManager job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +41,15 @@ public class SavedJobOffer extends AppCompatActivity {
         jobRetirementBenefits = (TextView) findViewById(R.id.offerRetirementID);
         jobLeaveTime = (TextView) findViewById(R.id.offerLeaveID);
 
+        JobCompareDbHelper dbHelper = new JobCompareDbHelper(this);
+        JobManager job = new JobManager(dbHelper);
+
         Button compareWithCurrent = (Button) findViewById(R.id.compareCurrentButtonID);
         Button enterAnotherOffer = (Button) findViewById(R.id.enterAnotherOfferButtonID);
         Button returnToMain = (Button) findViewById(R.id.returnToMainButtonID);
 
+        if(!job.isCurrentJobAvailable())
+            compareWithCurrent.setEnabled(false);
         returnToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,14 +83,14 @@ public class SavedJobOffer extends AppCompatActivity {
                 savedOfferValues.putString("bonus", jobBonus.getText().toString());
                 savedOfferValues.putString("benefits", jobRetirementBenefits.getText().toString());
                 savedOfferValues.putString("leave", jobLeaveTime.getText().toString());
+                savedOfferValues.putString("activity","savedjoboffer");
                 compareWithCurrent.putExtras(savedOfferValues);
                 startActivity(compareWithCurrent);
                 SavedJobOffer.this.finish();
             }
         });
 
-        dbHelper = new JobCompareDbHelper(this);
-        job = new JobManager(dbHelper);
+
 
         JobOffer jo = job.getLastJobOffer();
         jobTitle.setText(jo.getTitle());

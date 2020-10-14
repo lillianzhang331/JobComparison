@@ -87,7 +87,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean createCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public void createCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -103,10 +103,9 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("leavetime", leavetime);
 
         db.insert(JobCompareContract.CurrentJob.TABLE_NAME, null, contentValues);
-        return true;
     }
 
-    public boolean addJobOffer (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public void addJobOffer (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -122,7 +121,6 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("leavetime", leavetime);
 
         long id = db.insert(JobCompareContract.JobOffer.TABLE_NAME, null, contentValues);
-        return true;
     }
 
     public Cursor getLastJobOffer () {
@@ -139,19 +137,17 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         Cursor res =  db.rawQuery( "select count(*) from currentjob", null );
         res.moveToFirst();
         int count = res.getInt(0);
-        if(count > 0)
-            return true;
-        else
-            return false;
+        res.close();
+        return count > 0;
     }
 
     public Cursor getCurrentJob () {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select title, company, city, state, costofliving, commute, salary, bonus, retirementbenefits, leavetime from currentjob", null );
-        return res;
+        return db.rawQuery( "select title, company, city, state, costofliving, commute, " +
+                "salary, bonus, retirementbenefits, leavetime from currentjob", null );
     }
 
-    public boolean updateCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public void updateCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -168,7 +164,6 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
 
         db.update(JobCompareContract.CurrentJob.TABLE_NAME, contentValues, null, null);
 
-        return true;
     }
 
     public boolean isSettingsAvailable () {
@@ -176,16 +171,17 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         Cursor res =  db.rawQuery( "select count(*) from comparisonsettings", null );
         res.moveToFirst();
         int count = res.getInt(0);
+        res.close();
         return count > 0;
     }
 
     public Cursor getSettings () {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select commuteweight, salaryweight, bonusweight, retirementweight, leaveweight from comparisonsettings", null );
-        return res;
+        return db.rawQuery( "select commuteweight, salaryweight, bonusweight, " +
+                "retirementweight, leaveweight from comparisonsettings", null );
     }
 
-    public boolean saveSettings(Integer commutewt, Integer salarywt, Integer bonuswt, Integer retirementwt, Integer leavewt){
+    public void saveSettings(Integer commutewt, Integer salarywt, Integer bonuswt, Integer retirementwt, Integer leavewt){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -201,6 +197,14 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         else
             db.insert(JobCompareContract.ComparisonSettings.TABLE_NAME, null,contentValues);
         res.close();
-        return true;
+    }
+    public Integer getCurrentCostOfLiving(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select costofliving from currentjob", null );
+        res.moveToFirst();
+        if (res!= null)
+            return res.getInt(0);
+        else
+            return 0;
     }
 }

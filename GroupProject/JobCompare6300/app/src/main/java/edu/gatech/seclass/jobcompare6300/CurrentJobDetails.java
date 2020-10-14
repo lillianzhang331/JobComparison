@@ -43,7 +43,6 @@ public class CurrentJobDetails extends AppCompatActivity {
         jobRetirementBenefits = (EditText) findViewById(R.id.currentRetirementID);
         jobLeaveTime = (EditText) findViewById(R.id.currentLeaveID);
 
-        //Button currentSave = (Button) findViewById(R.id.currentSaveButtonID);
         Button currentCancel = (Button) findViewById(R.id.currentCancelButtonID);
         currentCancel.setOnClickListener(new View.OnClickListener() {
             @Override
