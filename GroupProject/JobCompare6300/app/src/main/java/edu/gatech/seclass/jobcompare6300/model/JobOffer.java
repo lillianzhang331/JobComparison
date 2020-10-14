@@ -9,6 +9,6 @@ public class JobOffer extends JobDetails {
 
     public void save(){
         dbHelper.addJobOffer(this.getTitle(), this.getCompany(), this.getCity(), this.getState(), this.getCostOfLiving(),
-                this.getCommute(), this.getSalary(), this.getBonus(), this.getRetirementBenefits(), this.getLeaveTime());
+                this.getCommute(), this.getSalary(), this.getBonus(), this.getRetirementBenefits(), this.getLeaveTime(), this.getJobScore());
     }
 }

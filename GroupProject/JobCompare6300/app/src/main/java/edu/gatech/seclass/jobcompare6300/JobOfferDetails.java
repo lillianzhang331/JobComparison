@@ -24,6 +24,7 @@ public class JobOfferDetails extends AppCompatActivity {
     private EditText jobBonus;
     private EditText jobRetirementBenefits;
     private EditText jobLeaveTime;
+    private MyApplication myApplication;
     private JobCompareDbHelper dbHelper;
     private JobManager job;
 
@@ -52,7 +53,7 @@ public class JobOfferDetails extends AppCompatActivity {
                 JobOfferDetails.this.finish();
             }
         });
-
+        myApplication = (MyApplication)getApplication();
         dbHelper = new JobCompareDbHelper(this);
         job = new JobManager(dbHelper);
 
@@ -126,11 +127,24 @@ public class JobOfferDetails extends AppCompatActivity {
                 & isSalaryNumber & isBonusNumber & isBenefitsNumber & isLeaveNumber;
 
         if (allValidInput){
-
+            Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, inputCostOfLiving, inputSalary));
+            Float adjustedBonus = Float.parseFloat(myApplication.adjustedYearlyBonus(dbHelper, inputCostOfLiving, inputBonus));
+            Float commuteWt = (float) myApplication.getCommuteWeight();
+            Float salaryWt = (float) myApplication.getSalaryWeight();
+            Float bonusWt = (float) myApplication.getBonusWeight();
+            Float retirementWt = (float) myApplication.getRetirementbenefitsWeight();
+            Float leaveWt = (float) myApplication.getLeaveWeight();
+            Float sumWt = commuteWt + salaryWt + bonusWt + retirementWt + leaveWt;
+            Float a = (salaryWt/sumWt)*adjustedSalary;
+            Float b = (bonusWt/sumWt)*adjustedBonus;
+            Float c = (retirementWt/sumWt)*(Float.parseFloat(inputRetirementBenefits)*adjustedSalary/100);
+            Float d = (leaveWt/sumWt)*(Float.parseFloat(inputLeaveTime)*adjustedSalary/260);
+            Float e = (commuteWt/sumWt)*(Float.parseFloat(inputCommute)*adjustedSalary/8);
+            Float jobScore = a + b + c + d - e;
             job.enterJobOffer(inputTitle, inputCompany, inputCity, inputState,
                     Integer.parseInt(inputCostOfLiving), Float.parseFloat(inputCommute),
                     Float.parseFloat(inputSalary), Float.parseFloat(inputBonus),
-                    Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
+                    Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime), jobScore);
 
             Intent savedIntent = new Intent(JobOfferDetails.this,
                     SavedJobOffer.class);

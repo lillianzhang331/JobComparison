@@ -74,7 +74,7 @@ public class JobComparison extends AppCompatActivity {
                 job2Commute.setText(job2.getString("commute"));
                 String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper, job2.getString("cost"), job2.getString("salary"));
                 job2Salary.setText(adjustedSalary);
-                String adjustedBonus = myApplication.adjustedYearlySalary(dbHelper, job2.getString("cost"), job2.getString("bonus"));
+                String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper, job2.getString("cost"), job2.getString("bonus"));
                 job2Bonus.setText(adjustedBonus);
                 job2RetirementBenefits.setText(job2.getString("benefits"));
                 job2LeaveTime.setText(job2.getString("leave"));

@@ -87,7 +87,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public void createCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public void createCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime, Float jobscore) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -101,11 +101,12 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("bonus", bonus);
         contentValues.put("retirementbenefits", retirementbenefits);
         contentValues.put("leavetime", leavetime);
+        contentValues.put("jobscore", jobscore);
 
         db.insert(JobCompareContract.CurrentJob.TABLE_NAME, null, contentValues);
     }
 
-    public void addJobOffer (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public void addJobOffer (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime, Float jobscore) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -119,6 +120,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("bonus", bonus);
         contentValues.put("retirementbenefits", retirementbenefits);
         contentValues.put("leavetime", leavetime);
+        contentValues.put("jobscore", jobscore);
 
         long id = db.insert(JobCompareContract.JobOffer.TABLE_NAME, null, contentValues);
     }
@@ -128,7 +130,13 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select max(rowid) from joboffer", null);
         res.moveToFirst();
         int lastID = res.getInt(0);
-        res = db.rawQuery("select title, company, city, state, costofliving, commute, salary, bonus, retirementbenefits, leavetime from joboffer where rowid=?", new String[]{String.valueOf(lastID)});
+        Cursor lastJobOffer = getJobOfferByID(lastID);
+        return lastJobOffer;
+    }
+
+    public Cursor getJobOfferByID(Integer rowid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select title, company, city, state, costofliving, commute, salary, bonus, retirementbenefits, leavetime, jobscore from joboffer where rowid=?", new String[]{String.valueOf(rowid)});
         return res;
     }
 
@@ -144,10 +152,10 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     public Cursor getCurrentJob () {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery( "select title, company, city, state, costofliving, commute, " +
-                "salary, bonus, retirementbenefits, leavetime from currentjob", null );
+                "salary, bonus, retirementbenefits, leavetime, jobscore from currentjob", null );
     }
 
-    public void updateCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime) {
+    public void updateCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime, Float jobscore) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -161,6 +169,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("bonus", bonus);
         contentValues.put("retirementbenefits", retirementbenefits);
         contentValues.put("leavetime", leavetime);
+        contentValues.put("jobscore", jobscore);
 
         db.update(JobCompareContract.CurrentJob.TABLE_NAME, contentValues, null, null);
 

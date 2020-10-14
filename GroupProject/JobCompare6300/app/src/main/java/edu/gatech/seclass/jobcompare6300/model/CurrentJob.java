@@ -10,9 +10,9 @@ public class CurrentJob extends JobDetails {
     public void save(){
         if(dbHelper.isCurrentJobAvailable())
             dbHelper.updateCurrentJob(this.getTitle(), this.getCompany(), this.getCity(), this.getState(), this.getCostOfLiving(),
-                    this.getCommute(), this.getSalary(), this.getBonus(), this.getRetirementBenefits(), this.getLeaveTime());
+                    this.getCommute(), this.getSalary(), this.getBonus(), this.getRetirementBenefits(), this.getLeaveTime(), this.getJobScore());
         else
             dbHelper.createCurrentJob(this.getTitle(), this.getCompany(), this.getCity(), this.getState(), this.getCostOfLiving(),
-                    this.getCommute(), this.getSalary(), this.getBonus(), this.getRetirementBenefits(), this.getLeaveTime());
+                    this.getCommute(), this.getSalary(), this.getBonus(), this.getRetirementBenefits(), this.getLeaveTime(), this.getJobScore());
     }
 }

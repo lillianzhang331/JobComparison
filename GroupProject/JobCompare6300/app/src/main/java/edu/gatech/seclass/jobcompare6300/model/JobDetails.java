@@ -15,6 +15,7 @@ public abstract class JobDetails {
     Float bonus;
     Integer retirementBenefits;
     Integer leaveTime;
+    Float jobScore;
 
     public String getTitle() {
         return title;
@@ -94,6 +95,14 @@ public abstract class JobDetails {
 
     public void setLeaveTime(Integer leaveTime) {
         this.leaveTime = leaveTime;
+    }
+
+    public Float getJobScore() {
+        return jobScore;
+    }
+
+    public void setJobScore(Float jobScore) {
+        this.jobScore = jobScore;
     }
 
     public abstract void save();

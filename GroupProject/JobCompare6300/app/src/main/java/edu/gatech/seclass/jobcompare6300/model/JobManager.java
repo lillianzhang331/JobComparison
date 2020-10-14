@@ -15,7 +15,7 @@ public class JobManager {
     }
 
     public void enterCurrentJob(String inputTitle, String inputCompany, String inputCity, String inputState, Integer inputCostOfLiving,
-                                Float inputCommute, Float inputSalary, Float inputBonus, Integer inputRetirementBenefits, Integer inputLeaveTime){
+                                Float inputCommute, Float inputSalary, Float inputBonus, Integer inputRetirementBenefits, Integer inputLeaveTime, Float jobScore){
         CurrentJob cj = new CurrentJob(dbHelper);
         cj.setTitle(inputTitle);
         cj.setCompany(inputCompany);
@@ -27,6 +27,7 @@ public class JobManager {
         cj.setBonus(inputBonus);
         cj.setRetirementBenefits(inputRetirementBenefits);
         cj.setLeaveTime(inputLeaveTime);
+        cj.setJobScore(jobScore);
         cj.save();
     }
 
@@ -45,12 +46,12 @@ public class JobManager {
         cj.setBonus(job.getFloat(7));
         cj.setRetirementBenefits(job.getInt(8));
         cj.setLeaveTime(job.getInt(9));
-
+        cj.setJobScore(job.getFloat(10));
         return cj;
     }
 
     public void enterJobOffer(String inputTitle, String inputCompany, String inputCity, String inputState, Integer inputCostOfLiving,
-                              Float inputCommute, Float inputSalary, Float inputBonus, Integer inputRetirementBenefits, Integer inputLeaveTime){
+                              Float inputCommute, Float inputSalary, Float inputBonus, Integer inputRetirementBenefits, Integer inputLeaveTime, Float jobScore){
         JobOffer jo = new JobOffer(dbHelper);
         jo.setTitle(inputTitle);
         jo.setCompany(inputCompany);
@@ -62,6 +63,7 @@ public class JobManager {
         jo.setBonus(inputBonus);
         jo.setRetirementBenefits(inputRetirementBenefits);
         jo.setLeaveTime(inputLeaveTime);
+        jo.setJobScore(jobScore);
         jo.save();
     }
 
@@ -80,6 +82,7 @@ public class JobManager {
         jo.setBonus(job.getFloat(7));
         jo.setRetirementBenefits(job.getInt(8));
         jo.setLeaveTime(job.getInt(9));
+        jo.setJobScore(job.getFloat(10));
 
         return jo;
     }
