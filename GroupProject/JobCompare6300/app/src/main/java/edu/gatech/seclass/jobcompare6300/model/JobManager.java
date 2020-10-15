@@ -87,6 +87,26 @@ public class JobManager {
         return jo;
     }
 
+    public JobOffer getJobOffer(Integer rowid) {
+        Cursor job = dbHelper.getJobOfferByID(rowid);
+        job.moveToFirst();
+        JobOffer jo = new JobOffer(dbHelper);
+
+        jo.setTitle(job.getString(0));
+        jo.setCompany(job.getString(1));
+        jo.setCity(job.getString(2));
+        jo.setState(job.getString(3));
+        jo.setCostOfLiving(job.getInt(4));
+        jo.setCommute(job.getFloat(5));
+        jo.setSalary(job.getFloat(6));
+        jo.setBonus(job.getFloat(7));
+        jo.setRetirementBenefits(job.getInt(8));
+        jo.setLeaveTime(job.getInt(9));
+        jo.setJobScore(job.getFloat(10));
+
+        return jo;
+    }
+
     public void compareJobOffers(){
 
     }

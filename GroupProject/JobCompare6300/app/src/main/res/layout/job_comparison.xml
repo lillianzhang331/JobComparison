@@ -58,9 +58,9 @@
 
                     <TextView
                         android:id="@+id/job2title"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:textSize="24sp" />
                 </TableRow>
 
@@ -84,9 +84,9 @@
 
                     <TextView
                         android:id="@+id/job2company"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:textSize="24sp" />
                 </TableRow>
 
@@ -110,9 +110,9 @@
 
                     <TextView
                         android:id="@+id/job2location"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:textSize="24sp" />
                 </TableRow>
 
@@ -136,9 +136,9 @@
 
                     <TextView
                         android:id="@+id/job2commute"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:textSize="24sp" />
                 </TableRow>
 
@@ -162,9 +162,9 @@
 
                     <TextView
                         android:id="@+id/job2salary"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:textSize="24sp" />
                 </TableRow>
 
@@ -188,9 +188,9 @@
 
                     <TextView
                         android:id="@+id/job2bonus"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:textSize="24sp" />
                 </TableRow>
 
@@ -214,9 +214,9 @@
 
                     <TextView
                         android:id="@+id/job2benefits"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:textSize="24sp" />
                 </TableRow>
 
@@ -240,9 +240,9 @@
 
                     <TextView
                         android:id="@+id/job2leave"
-                        android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
                         android:textSize="24sp" />
                 </TableRow>
             </TableLayout>
