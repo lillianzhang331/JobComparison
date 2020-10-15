@@ -3,6 +3,7 @@ package edu.gatech.seclass.jobcompare6300.model;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -235,5 +236,14 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
             return res.getInt(0);
         else
             return 0;
+    }
+    public Cursor getAllJobs() {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor res = db.rawQuery("select * from joboffer union all select * from currentjob order by jobscore desc", null);
+            return res;
+        } catch (SQLException mSQLException) {
+            throw mSQLException;
+        }
     }
 }
