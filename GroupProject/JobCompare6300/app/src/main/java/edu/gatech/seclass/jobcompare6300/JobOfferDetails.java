@@ -8,6 +8,11 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.net.Inet4Address;
+
+import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+import edu.gatech.seclass.jobcompare6300.model.JobManager;
+
 public class JobOfferDetails extends AppCompatActivity {
     private EditText jobTitle;
     private EditText jobCompany;
@@ -19,6 +24,9 @@ public class JobOfferDetails extends AppCompatActivity {
     private EditText jobBonus;
     private EditText jobRetirementBenefits;
     private EditText jobLeaveTime;
+    private MyApplication myApplication;
+    private JobCompareDbHelper dbHelper;
+    private JobManager job;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,9 @@ public class JobOfferDetails extends AppCompatActivity {
                 JobOfferDetails.this.finish();
             }
         });
+        myApplication = (MyApplication)getApplication();
+        dbHelper = new JobCompareDbHelper(this);
+        job = new JobManager(dbHelper);
 
         /*Button offerSave = (Button) findViewById(R.id.offerSaveButtonID);
         offerSave.setOnClickListener(new View.OnClickListener() {
@@ -81,12 +92,12 @@ public class JobOfferDetails extends AppCompatActivity {
 
         boolean isCityAllAlphabet = isAlpha(inputCity);
         boolean isStateAllAlphabet = isAlpha(inputState);
-        boolean isCostNumber = isNumberUserDefined(inputCostOfLiving);
-        boolean isCommuteNumber = isNumberUserDefined(inputCommute);
-        boolean isSalaryNumber = isNumberUserDefined(inputSalary);
-        boolean isBonusNumber = isNumberUserDefined(inputBonus);
-        boolean isBenefitsNumber = isNumberUserDefined(inputRetirementBenefits);
-        boolean isLeaveNumber = isNumberUserDefined(inputLeaveTime);
+        boolean isCostNumber = isInteger(inputCostOfLiving);
+        boolean isCommuteNumber = isFloat(inputCommute);
+        boolean isSalaryNumber = isFloat(inputSalary);
+        boolean isBonusNumber = isFloat(inputBonus);
+        boolean isBenefitsNumber = isInteger(inputRetirementBenefits);
+        boolean isLeaveNumber = isInteger(inputLeaveTime);
 
 
 
@@ -116,7 +127,14 @@ public class JobOfferDetails extends AppCompatActivity {
                 & isSalaryNumber & isBonusNumber & isBenefitsNumber & isLeaveNumber;
 
         if (allValidInput){
-            Intent savedIntent = new Intent(JobOfferDetails.this, SavedJobOffer.class);
+            Float jobScore = (float) 1.0;
+            job.enterJobOffer(inputTitle, inputCompany, inputCity, inputState,
+                    Integer.parseInt(inputCostOfLiving), Float.parseFloat(inputCommute),
+                    Float.parseFloat(inputSalary), Float.parseFloat(inputBonus),
+                    Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime), jobScore);
+
+            Intent savedIntent = new Intent(JobOfferDetails.this,
+                    SavedJobOffer.class);
             startActivity(savedIntent);
             JobOfferDetails.this.finish();
         }
@@ -127,7 +145,7 @@ public class JobOfferDetails extends AppCompatActivity {
         return name.matches("^[a-zA-Z\\s\\-\']*$");
     }
 
-    public boolean isNumberUserDefined(String str) {
+    public boolean isInteger(String str) {
         try {
             Integer.parseInt(str);
             return true;
@@ -135,5 +153,12 @@ public class JobOfferDetails extends AppCompatActivity {
             return false;
         }
     }
-
+    public boolean isFloat(String str) {
+        try {
+            Float.parseFloat(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

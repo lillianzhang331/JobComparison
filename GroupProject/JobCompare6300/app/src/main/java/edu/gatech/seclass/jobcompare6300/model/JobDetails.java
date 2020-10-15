@@ -9,12 +9,13 @@ public abstract class JobDetails {
     String company;
     String city;
     String state;
-    String costOfLiving;
+    Integer costOfLiving;
     Float commute;
     Float salary;
     Float bonus;
     Integer retirementBenefits;
     Integer leaveTime;
+    Float jobScore;
 
     public String getTitle() {
         return title;
@@ -48,11 +49,11 @@ public abstract class JobDetails {
         this.state = state;
     }
 
-    public String getCostOfLiving() {
+    public Integer getCostOfLiving() {
         return costOfLiving;
     }
 
-    public void setCostOfLiving(String costOfLiving) {
+    public void setCostOfLiving(Integer costOfLiving) {
         this.costOfLiving = costOfLiving;
     }
 
@@ -94,6 +95,14 @@ public abstract class JobDetails {
 
     public void setLeaveTime(Integer leaveTime) {
         this.leaveTime = leaveTime;
+    }
+
+    public Float getJobScore() {
+        return jobScore;
+    }
+
+    public void setJobScore(Float jobScore) {
+        this.jobScore = jobScore;
     }
 
     public abstract void save();

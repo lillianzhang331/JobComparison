@@ -24,6 +24,7 @@ public class CurrentJobDetails extends AppCompatActivity {
     private EditText jobBonus;
     private EditText jobRetirementBenefits;
     private EditText jobLeaveTime;
+    private MyApplication myApplication;
     private JobCompareDbHelper dbHelper;
     private JobManager job;
 
@@ -43,7 +44,6 @@ public class CurrentJobDetails extends AppCompatActivity {
         jobRetirementBenefits = (EditText) findViewById(R.id.currentRetirementID);
         jobLeaveTime = (EditText) findViewById(R.id.currentLeaveID);
 
-        //Button currentSave = (Button) findViewById(R.id.currentSaveButtonID);
         Button currentCancel = (Button) findViewById(R.id.currentCancelButtonID);
         currentCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +54,7 @@ public class CurrentJobDetails extends AppCompatActivity {
             }
         });
 
+        myApplication = (MyApplication)getApplication();
         dbHelper = new JobCompareDbHelper(this);
         job = new JobManager(dbHelper);
 
@@ -64,7 +65,7 @@ public class CurrentJobDetails extends AppCompatActivity {
             jobCompany.setText(cj.getCompany());
             jobCity.setText(cj.getCity());
             jobState.setText(cj.getState());
-            jobCostOfLiving.setText(cj.getCostOfLiving());
+            jobCostOfLiving.setText(cj.getCostOfLiving().toString());
             jobCommute.setText(cj.getCommute().toString());
             jobSalary.setText(cj.getSalary().toString());
             jobBonus.setText(cj.getBonus().toString());
@@ -72,6 +73,7 @@ public class CurrentJobDetails extends AppCompatActivity {
             jobLeaveTime.setText(cj.getLeaveTime().toString());
         }
     }
+
     public void handleClickSaveCurrent (View view){
         String inputTitle = jobTitle.getText().toString();
         String inputCompany = jobCompany.getText().toString();
@@ -97,12 +99,12 @@ public class CurrentJobDetails extends AppCompatActivity {
 
         boolean isCityAllAlphabet = isAlpha(inputCity);
         boolean isStateAllAlphabet = isAlpha(inputState);
-        boolean isCostNumber = isNumberUserDefined(inputCostOfLiving);
-        boolean isCommuteNumber = isNumberUserDefined(inputCommute);
-        boolean isSalaryNumber = isNumberUserDefined(inputSalary);
-        boolean isBonusNumber = isNumberUserDefined(inputBonus);
-        boolean isBenefitsNumber = isNumberUserDefined(inputRetirementBenefits);
-        boolean isLeaveNumber = isNumberUserDefined(inputLeaveTime);
+        boolean isCostNumber = isInteger(inputCostOfLiving);
+        boolean isCommuteNumber = isFloat(inputCommute);
+        boolean isSalaryNumber = isFloat(inputSalary);
+        boolean isBonusNumber = isFloat(inputBonus);
+        boolean isBenefitsNumber = isInteger(inputRetirementBenefits);
+        boolean isLeaveNumber = isInteger(inputLeaveTime);
 
         if (!validTitle){jobTitle.setError("No Title Input");}
         if (!validCompany){jobCompany.setError("No Company Input");}
@@ -128,9 +130,12 @@ public class CurrentJobDetails extends AppCompatActivity {
                 && validCommute && validSalary && validBonus && validRetirementBenefits
                 && validLeaveTime && isCityAllAlphabet && isStateAllAlphabet && isCostNumber
                 && isCommuteNumber && isSalaryNumber && isBonusNumber && isBenefitsNumber
-                && isLeaveNumber){
-            job.enterCurrentJob(inputTitle, inputCompany, inputCity, inputState, inputCostOfLiving, Float.parseFloat(inputCommute), Float.parseFloat(inputSalary),
-                    Float.parseFloat(inputBonus), Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime));
+                && isLeaveNumber) {
+            Float jobScore = (float) 1.0;
+            job.enterCurrentJob(inputTitle, inputCompany, inputCity, inputState,
+                    Integer.parseInt(inputCostOfLiving), Float.parseFloat(inputCommute),
+                    Float.parseFloat(inputSalary), Float.parseFloat(inputBonus),
+                    Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime), jobScore);
 
             Intent retToMain = new Intent(CurrentJobDetails.this, MainMenu.class);
             startActivity(retToMain);
@@ -143,7 +148,7 @@ public class CurrentJobDetails extends AppCompatActivity {
         return name.matches("^[a-zA-Z\\s\\-\']*$");
     }
 
-    public boolean isNumberUserDefined(String str) {
+    public boolean isInteger(String str) {
         try {
             Integer.parseInt(str);
             return true;
@@ -151,5 +156,12 @@ public class CurrentJobDetails extends AppCompatActivity {
             return false;
         }
     }
-
+    public boolean isFloat(String str) {
+        try {
+            Float.parseFloat(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

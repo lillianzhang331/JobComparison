@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:text="Title                 Company          "
             android:textAlignment="viewEnd"
+            android:textStyle="bold"
             android:textSize="24sp" />
 
         <ScrollView
@@ -53,6 +54,7 @@
                 android:orientation="vertical">
 
                 <TableLayout
+                    android:id="@+id/tableLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

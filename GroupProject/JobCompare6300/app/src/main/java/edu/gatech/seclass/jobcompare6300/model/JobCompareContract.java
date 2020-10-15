@@ -19,6 +19,20 @@ public final class JobCompareContract {
         public static final String COLUMN_NAME_JOBSCORE = "jobscore";
 
     }
+    public static class JobOffer implements BaseColumns {
+        public static final String TABLE_NAME = "joboffer";
+        public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_COMPANY = "company";
+        public static final String COLUMN_NAME_CITY = "city";
+        public static final String COLUMN_NAME_STATE = "state";
+        public static final String COLUMN_NAME_COSTOFLIVING = "costofliving";
+        public static final String COLUMN_NAME_COMMUTE = "commute";
+        public static final String COLUMN_NAME_SALARY = "salary";
+        public static final String COLUMN_NAME_BONUS = "bonus";
+        public static final String COLUMN_NAME_RETIREMENTBENEFITS = "retirementbenefits";
+        public static final String COLUMN_NAME_LEAVETIME = "leavetime";
+        public static final String COLUMN_NAME_JOBSCORE = "jobscore";
+    }
     public static class ComparisonSettings implements BaseColumns {
         public static final String TABLE_NAME = "comparisonsettings";
         public static final String COLUMN_NAME_COMMUTEWT = "commuteweight";
