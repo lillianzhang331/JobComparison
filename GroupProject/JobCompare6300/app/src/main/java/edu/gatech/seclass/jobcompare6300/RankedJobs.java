@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
 import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
 import edu.gatech.seclass.jobcompare6300.model.JobManager;
 import edu.gatech.seclass.jobcompare6300.model.JobOffer;
@@ -62,5 +63,15 @@ public class RankedJobs extends AppCompatActivity {
 
             dbHelper.updateJobOfferScore(row, jobScore);
         }
+        CurrentJob cj = job.getCurrentJob();
+        Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, cj.getCostOfLiving().toString(), cj.getSalary().toString()));
+        Float adjustedBonus = Float.parseFloat(myApplication.adjustedYearlyBonus(dbHelper, cj.getCostOfLiving().toString(), cj.getBonus().toString()));
+        Float a = (salaryWt/sumWt)*adjustedSalary;
+        Float b = (bonusWt/sumWt)*adjustedBonus;
+        Float c = (retirementWt/sumWt)*(Float.parseFloat(cj.getRetirementBenefits().toString())*adjustedSalary/100);
+        Float d = (leaveWt/sumWt)*(Float.parseFloat(cj.getLeaveTime().toString())*adjustedSalary/260);
+        Float e = (commuteWt/sumWt)*(Float.parseFloat(cj.getCommute().toString())*adjustedSalary/8);
+        Float jobScore = a + b + c + d - e;
+        dbHelper.updateCurrentJobScore(jobScore);
     }
 }

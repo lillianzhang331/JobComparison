@@ -153,6 +153,13 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         db.update(JobCompareContract.CurrentJob.TABLE_NAME, contentValues, "rowid="+rowid, null);
     }
 
+    public void updateCurrentJobScore(Float jobScore) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("jobscore",jobScore);
+        db.update(JobCompareContract.CurrentJob.TABLE_NAME, contentValues, null, null);
+    }
+
     public boolean isCurrentJobAvailable () {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select count(*) from currentjob", null );
