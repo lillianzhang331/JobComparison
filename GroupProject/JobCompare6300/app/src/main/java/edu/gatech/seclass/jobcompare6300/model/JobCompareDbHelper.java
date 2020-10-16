@@ -105,6 +105,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("jobscore", jobscore);
 
         db.insert(JobCompareContract.CurrentJob.TABLE_NAME, null, contentValues);
+        db.close();
     }
 
     public void addJobOffer (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime, Float jobscore) {
@@ -124,6 +125,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         contentValues.put("jobscore", jobscore);
 
         long id = db.insert(JobCompareContract.JobOffer.TABLE_NAME, null, contentValues);
+        db.close();
     }
 
     public Cursor getLastJobOffer () {
@@ -151,7 +153,8 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("jobscore",jobScore);
-        db.update(JobCompareContract.CurrentJob.TABLE_NAME, contentValues, "rowid="+rowid, null);
+        db.update(JobCompareContract.JobOffer.TABLE_NAME, contentValues, "rowid="+rowid, null);
+        db.close();
     }
 
     public void updateCurrentJobScore(Float jobScore) {
@@ -159,6 +162,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("jobscore",jobScore);
         db.update(JobCompareContract.CurrentJob.TABLE_NAME, contentValues, null, null);
+        db.close();
     }
 
     public boolean isCurrentJobAvailable () {
@@ -227,6 +231,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         else
             db.insert(JobCompareContract.ComparisonSettings.TABLE_NAME, null,contentValues);
         res.close();
+        db.close();
     }
     public Integer getCurrentCostOfLiving(){
         SQLiteDatabase db = this.getReadableDatabase();

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
+import edu.gatech.seclass.jobcompare6300.model.ComparisonSettingsModel;
 import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
 import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
 import edu.gatech.seclass.jobcompare6300.model.JobManager;
@@ -21,6 +25,8 @@ import edu.gatech.seclass.jobcompare6300.model.JobOffer;
 
 public class RankedJobs extends AppCompatActivity {
     private TableLayout table_layout;
+    private static String TAG = "MY VALUES";
+    private Integer checkboxCounter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +34,6 @@ public class RankedJobs extends AppCompatActivity {
         MyApplication myApplication = (MyApplication) getApplication();
         JobCompareDbHelper dbHelper = new JobCompareDbHelper(this);
         JobManager job = new JobManager(dbHelper);
-
-        Cursor jobs = dbHelper.getAllJobs();
-        table_layout = findViewById(R.id.tableLayout);
-        BuildTable(jobs);
 
         Button rankedMakeComparison = (Button) findViewById(R.id.rankedMakeComparisonButtonID);
         rankedMakeComparison.setOnClickListener(new View.OnClickListener() {
@@ -48,14 +50,15 @@ public class RankedJobs extends AppCompatActivity {
 
 
 
-        Integer numJobs = dbHelper.getJobOfferNumRowIDs();
-        Float commuteWt = (float) myApplication.getCommuteWeight();
-        Float salaryWt = (float) myApplication.getSalaryWeight();
-        Float bonusWt = (float) myApplication.getBonusWeight();
-        Float retirementWt = (float) myApplication.getRetirementbenefitsWeight();
-        Float leaveWt = (float) myApplication.getLeaveWeight();
+        ComparisonSettingsModel settings = new ComparisonSettingsModel(dbHelper);
+        Float commuteWt = (float) settings.getCommuteWeight();
+        Float salaryWt = (float) settings.getSalaryWeight();
+        Float bonusWt = (float) settings.getBonusWeight();
+        Float retirementWt = (float) settings.getRetirementbenefitsWeight();
+        Float leaveWt = (float) settings.getLeaveWeight();
         Float sumWt = commuteWt + salaryWt + bonusWt + retirementWt + leaveWt;
 
+        Integer numJobs = dbHelper.getJobOfferNumRowIDs();
         for (int row = 1; row <= numJobs; row++) {
             JobOffer jo = job.getJobOffer(row);
 
@@ -69,6 +72,8 @@ public class RankedJobs extends AppCompatActivity {
             Float jobScore = a + b + c + d - e;
 
             dbHelper.updateJobOfferScore(row, jobScore);
+            jobScore = jo.getJobScore();
+            Log.v(TAG, jobScore.toString());
         }
         CurrentJob cj = job.getCurrentJob();
         Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, cj.getCostOfLiving().toString(), cj.getSalary().toString()));
@@ -80,11 +85,20 @@ public class RankedJobs extends AppCompatActivity {
         Float e = (commuteWt/sumWt)*(Float.parseFloat(cj.getCommute().toString())*adjustedSalary/8);
         Float jobScore = a + b + c + d - e;
         dbHelper.updateCurrentJobScore(jobScore);
+
+        Cursor jobs = job.getAllJobs();
+        int totalJobs = jobs.getCount();
+        table_layout = findViewById(R.id.tableLayout);
+        BuildTable(jobs);
     }
-    private void BuildTable(Cursor jobs){
+    private void BuildTable(final Cursor jobs){
         jobs.moveToFirst();
         do {
-            TableRow dataRow = new TableRow(this);
+            int totalJobs = jobs.getCount();
+            int colCount = jobs.getColumnCount();
+            String title_company = jobs.getString(1) + ", " + jobs.getString(2);
+            String score = jobs.getString(colCount-1);
+            final TableRow dataRow = new TableRow(this);
             dataRow.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
                     TableLayout.LayoutParams.WRAP_CONTENT));
@@ -92,11 +106,10 @@ public class RankedJobs extends AppCompatActivity {
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
             int cols = 2;
-            int colCount = jobs.getColumnCount();
 
             for (int j = 1; j < cols+1; j++) {
                 if(j==1) {
-                    CheckBox cb = new CheckBox(this);
+                    final CheckBox cb = new CheckBox(this);
                     cb.setLayoutParams(params);
                     cb.setGravity(Gravity.CENTER_VERTICAL);
                     cb.setPadding(0, 5, 200, 5);
@@ -105,6 +118,11 @@ public class RankedJobs extends AppCompatActivity {
                     cb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            if (cb.isChecked())
+                                checkboxCounter += 1;
+                            else
+                                checkboxCounter -= 1;
+                            Log.v(TAG, checkboxCounter.toString());
                         }
                     });
                 }
@@ -115,8 +133,6 @@ public class RankedJobs extends AppCompatActivity {
                 tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                 tv.setPadding(0, 5, 300, 5);
                 tv.setText(jobs.getString(j));
-                String title_company = jobs.getString(1) + jobs.getString(2);
-                String score = jobs.getString(colCount-1);
                 dataRow.addView(tv);
             }
             table_layout.addView(dataRow);
