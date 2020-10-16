@@ -45,6 +45,8 @@ public class RankedJobs extends AppCompatActivity {
                 Intent makeComparison = new Intent(RankedJobs.this, JobComparison.class);
                 Bundle rankedJobsValues = new Bundle();
                 rankedJobsValues.putString("activity","rankedjobs");
+                rankedJobsValues.putString("1",jobsToBeCompared.get(0));
+                rankedJobsValues.putString("2",jobsToBeCompared.get(1));
                 makeComparison.putExtras(rankedJobsValues);
                 startActivity(makeComparison);
                 RankedJobs.this.finish();

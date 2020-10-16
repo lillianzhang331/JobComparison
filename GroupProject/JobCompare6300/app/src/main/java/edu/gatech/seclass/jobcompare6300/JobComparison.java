@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
 import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+import edu.gatech.seclass.jobcompare6300.model.JobDetails;
 import edu.gatech.seclass.jobcompare6300.model.JobManager;
+import edu.gatech.seclass.jobcompare6300.model.JobOffer;
 
 public class JobComparison extends AppCompatActivity {
     private TextView job1Title, job2Title;
@@ -81,6 +83,58 @@ public class JobComparison extends AppCompatActivity {
             }
         }
         else if(fromIntent.getExtras().getString("activity").equals("rankedjobs")){
+            String str1 = fromIntent.getExtras().getString("1");
+            String str2 = fromIntent.getExtras().getString("2");
+            JobDetails job1 = null;
+            JobDetails job2 = null;
+
+            if(str1.equalsIgnoreCase("cj")) {
+                job1 = job.getCurrentJob();
+                job2 = job.getJobOffer(Integer.parseInt(str2));
+            }else if (str2.equalsIgnoreCase("cj")){
+                job1 = job.getCurrentJob();
+                job2 = job.getJobOffer(Integer.parseInt(str1));
+            }else{
+                job1 = job.getJobOffer(Integer.parseInt(str1));
+                job2 = job.getJobOffer(Integer.parseInt(str2));
+            }
+
+            job1Title.setText(job1.getTitle());
+            job1Company.setText(job1.getCompany());
+            String location1 = job1.getCity() + "," + job1.getState();
+            job1Location.setText(location1);
+            job1Commute.setText(job1.getCommute().toString());
+            if(job1 instanceof JobOffer) {
+                String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper, job1.getCostOfLiving().toString(), job1.getSalary().toString());
+                job1Salary.setText(adjustedSalary);
+                String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper, job1.getCostOfLiving().toString(), job1.getBonus().toString());
+                job1Bonus.setText(adjustedBonus);
+            }else{
+                job1Salary.setText(job1.getSalary().toString());
+                job1Bonus.setText(job1.getBonus().toString());
+            }
+
+            job1RetirementBenefits.setText(job1.getRetirementBenefits().toString());
+            job1LeaveTime.setText(job1.getLeaveTime().toString());
+
+            if (job2 != null) {
+                job2Title.setText(job2.getTitle());
+                job2Company.setText(job2.getCompany());
+                String location2 = job2.getCity() + "," + job2.getState();
+                job2Location.setText(location2);
+                job2Commute.setText(job2.getCommute().toString());
+                if(job2 instanceof JobOffer) {
+                    String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper, job2.getCostOfLiving().toString(), job2.getSalary().toString());
+                    job2Salary.setText(adjustedSalary);
+                    String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper, job2.getCostOfLiving().toString(), job2.getBonus().toString());
+                    job2Bonus.setText(adjustedBonus);
+                }else{
+                    job2Salary.setText(job2.getSalary().toString());
+                    job2Bonus.setText(job2.getBonus().toString());
+                }
+                job2RetirementBenefits.setText(job2.getRetirementBenefits().toString());
+                job2LeaveTime.setText(job2.getLeaveTime().toString());
+            }
 
         }
         Button returnToMain = (Button) findViewById(R.id.returnToMainMenuButtonID);
