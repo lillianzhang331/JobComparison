@@ -16,10 +16,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.gatech.seclass.jobcompare6300.model.ComparisonSettingsModel;
 import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
 import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+import edu.gatech.seclass.jobcompare6300.model.JobDetails;
 import edu.gatech.seclass.jobcompare6300.model.JobManager;
 import edu.gatech.seclass.jobcompare6300.model.JobOffer;
 
@@ -27,6 +29,7 @@ public class RankedJobs extends AppCompatActivity {
     private TableLayout table_layout;
     private static String TAG = "MY VALUES";
     private Integer checkboxCounter = 0;
+    private List<String> jobsToBeCompared = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +61,9 @@ public class RankedJobs extends AppCompatActivity {
         Float leaveWt = (float) settings.getLeaveWeight();
         Float sumWt = commuteWt + salaryWt + bonusWt + retirementWt + leaveWt;
 
-        Integer numJobs = dbHelper.getJobOfferNumRowIDs();
-        for (int row = 1; row <= numJobs; row++) {
-            JobOffer jo = job.getJobOffer(row);
+        List<Integer> numJobs = dbHelper.getJobOfferNumRowIDs();
+        for (int row = 0; row < numJobs.size(); row++) {
+            JobOffer jo = job.getJobOffer(numJobs.get(row));
 
             Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, jo.getCostOfLiving().toString(), jo.getSalary().toString()));
             Float adjustedBonus = Float.parseFloat(myApplication.adjustedYearlyBonus(dbHelper, jo.getCostOfLiving().toString(), jo.getBonus().toString()));
@@ -71,7 +74,7 @@ public class RankedJobs extends AppCompatActivity {
             Float e = (commuteWt/sumWt)*(Float.parseFloat(jo.getCommute().toString())*adjustedSalary/8);
             Float jobScore = a + b + c + d - e;
 
-            dbHelper.updateJobOfferScore(row, jobScore);
+            dbHelper.updateJobOfferScore(numJobs.get(row), jobScore);
             jobScore = jo.getJobScore();
             Log.v(TAG, jobScore.toString());
         }
@@ -86,18 +89,14 @@ public class RankedJobs extends AppCompatActivity {
         Float jobScore = a + b + c + d - e;
         dbHelper.updateCurrentJobScore(jobScore);
 
-        Cursor jobs = job.getAllJobs();
-        int totalJobs = jobs.getCount();
+        List<JobDetails> jobs = job.getAllJobs();
+        int totalJobs = jobs.size();
         table_layout = findViewById(R.id.tableLayout);
         BuildTable(jobs);
     }
-    private void BuildTable(final Cursor jobs){
-        jobs.moveToFirst();
-        ArrayList<Integer> jobIdList = new ArrayList<Integer>();
-        final ArrayList<Integer> checkedJobIdList = new ArrayList<Integer>();
-
-        do {
-            int colCount = jobs.getColumnCount();
+    private void BuildTable(final List<JobDetails> jobs){
+        for(int i = 0 ; i<jobs.size(); i++){
+            final JobDetails job = jobs.get(i);
             final TableRow dataRow = new TableRow(this);
             dataRow.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
@@ -105,12 +104,9 @@ public class RankedJobs extends AppCompatActivity {
             TableRow.LayoutParams params = new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
-
             int cols = 2;
-            final Integer jobId = jobs.getInt(0);
-            Log.v(TAG,"Job ID List:" + jobIdList.toString());
 
-            for (int j = 0; j < cols+1; j++) {
+            for (int j = 1; j < cols+1; j++) {
                 if(j==1) {
                     final CheckBox cb = new CheckBox(this);
                     cb.setLayoutParams(params);
@@ -121,14 +117,26 @@ public class RankedJobs extends AppCompatActivity {
                     cb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (cb.isChecked()) {
-                                if (!checkedJobIdList.contains(jobId))
-                                    checkedJobIdList.add(jobId);
+                            if (job instanceof CurrentJob && jobsToBeCompared.contains("cj")) {
+                                jobsToBeCompared.remove("cj");
+                                checkboxCounter -= 1;
                             }
-                            else
-                                if (checkedJobIdList.contains(jobId))
-                                    checkedJobIdList.remove(jobId);
-                            Log.v(TAG, "Job ID List:" + checkedJobIdList.toString());
+                            else if(job instanceof JobOffer && jobsToBeCompared.contains(Integer.toString(job.getId()))) {
+                                jobsToBeCompared.remove(Integer.toString(job.getId()));
+                                checkboxCounter -= 1;
+                            }
+
+                            if(checkboxCounter >= 2)
+                                cb.toggle();
+                            else {
+                                if (cb.isChecked()) {
+                                    checkboxCounter += 1;
+                                    if (job instanceof CurrentJob)
+                                        jobsToBeCompared.add("cj");
+                                    else
+                                        jobsToBeCompared.add(Integer.toString(job.getId()));
+                                }
+                            }
                         }
                     });
                 }
@@ -138,10 +146,14 @@ public class RankedJobs extends AppCompatActivity {
                 tv.setTextSize(24);
                 tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                 tv.setPadding(0, 5, 300, 5);
-                tv.setText(jobs.getString(j));
+                if(job instanceof CurrentJob)
+                    tv.setText(job.getTitle() + "," + job.getCompany() + "(Current Job)");
+                else
+                    tv.setText(job.getTitle() + "," + job.getCompany());
+
                 dataRow.addView(tv);
             }
             table_layout.addView(dataRow);
-        } while (jobs.moveToNext());
+        }
     }
 }

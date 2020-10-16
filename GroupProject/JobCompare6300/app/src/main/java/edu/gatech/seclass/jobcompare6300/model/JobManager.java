@@ -2,6 +2,9 @@ package edu.gatech.seclass.jobcompare6300.model;
 
 import android.database.Cursor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class JobManager {
 
     JobCompareDbHelper dbHelper;
@@ -47,6 +50,7 @@ public class JobManager {
         cj.setRetirementBenefits(job.getInt(8));
         cj.setLeaveTime(job.getInt(9));
         cj.setJobScore(job.getFloat(10));
+        cj.setId(job.getInt(11));
         return cj;
     }
 
@@ -83,6 +87,7 @@ public class JobManager {
         jo.setRetirementBenefits(job.getInt(8));
         jo.setLeaveTime(job.getInt(9));
         jo.setJobScore(job.getFloat(10));
+        jo.setId(job.getInt(11));
 
         return jo;
     }
@@ -103,11 +108,43 @@ public class JobManager {
         jo.setRetirementBenefits(job.getInt(8));
         jo.setLeaveTime(job.getInt(9));
         jo.setJobScore(job.getFloat(10));
-
+        jo.setId(job.getInt(11));
         return jo;
     }
 
-    public Cursor getAllJobs(){
-        return dbHelper.getAllJobs();
+    public List<JobDetails> getAllJobs(){
+        List<JobDetails> allJobs = new ArrayList<JobDetails>();
+        CurrentJob cj = this.getCurrentJob();
+        boolean cjAdded = false;
+
+        Cursor res = dbHelper.getAllJobOffers();
+        res.moveToFirst();
+        while(!res.isAfterLast()) {
+            JobOffer jo = new JobOffer(dbHelper);
+            jo.setTitle(res.getString(0));
+            jo.setCompany(res.getString(1));
+            jo.setCity(res.getString(2));
+            jo.setState(res.getString(3));
+            jo.setCostOfLiving(res.getInt(4));
+            jo.setCommute(res.getFloat(5));
+            jo.setSalary(res.getFloat(6));
+            jo.setBonus(res.getFloat(7));
+            jo.setRetirementBenefits(res.getInt(8));
+            jo.setLeaveTime(res.getInt(9));
+            jo.setJobScore(res.getFloat(10));
+            jo.setId(res.getInt(11));
+
+            if(cj.getJobScore() > jo.getJobScore()){
+                allJobs.add(cj);
+                cjAdded = true;
+            }
+            allJobs.add(jo);
+
+            res.moveToNext();
+        }
+        if(!cjAdded)
+            allJobs.add(cj);
+
+        return allJobs;
     }
 }

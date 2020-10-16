@@ -16,6 +16,7 @@ public abstract class JobDetails {
     Integer retirementBenefits;
     Integer leaveTime;
     Float jobScore;
+    Integer id;
 
     public String getTitle() {
         return title;
@@ -103,6 +104,14 @@ public abstract class JobDetails {
 
     public void setJobScore(Float jobScore) {
         this.jobScore = jobScore;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public abstract void save();

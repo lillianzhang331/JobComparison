@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JobCompareDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
@@ -130,7 +134,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
 
     public Cursor getLastJobOffer () {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select max(rowid) from joboffer", null);
+        Cursor res = db.rawQuery("select max(_ID) from joboffer", null);
         res.moveToFirst();
         int lastID = res.getInt(0);
         Cursor lastJobOffer = getJobOfferByID(lastID);
@@ -139,21 +143,27 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
 
     public Cursor getJobOfferByID(Integer rowid) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select title, company, city, state, costofliving, commute, salary, bonus, retirementbenefits, leavetime, jobscore from joboffer where rowid=?", new String[]{String.valueOf(rowid)});
+        Cursor res = db.rawQuery("select title, company, city, state, costofliving, commute, salary, bonus, retirementbenefits, leavetime, jobscore, _id from joboffer where _ID=?", new String[]{String.valueOf(rowid)});
         return res;
     }
 
-    public Integer getJobOfferNumRowIDs() {
+    public List<Integer> getJobOfferNumRowIDs() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select count(*) from joboffer", null);
+        List<Integer> jobIds = new ArrayList<Integer>();
+        Cursor res = db.rawQuery("select _ID from joboffer", null);
         res.moveToFirst();
-        return res.getInt(0);
+        while(!res.isAfterLast()) {
+            jobIds.add(res.getInt(0)); //add the item
+            res.moveToNext();
+        }
+
+        return jobIds;
     }
     public void updateJobOfferScore(Integer rowid, Float jobScore) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("jobscore",jobScore);
-        db.update(JobCompareContract.JobOffer.TABLE_NAME, contentValues, "rowid="+rowid, null);
+        db.update(JobCompareContract.JobOffer.TABLE_NAME, contentValues, "_ID="+rowid, null);
         db.close();
     }
 
@@ -177,7 +187,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     public Cursor getCurrentJob () {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery( "select title, company, city, state, costofliving, commute, " +
-                "salary, bonus, retirementbenefits, leavetime, jobscore from currentjob", null );
+                "salary, bonus, retirementbenefits, leavetime, jobscore, _ID from currentjob", null );
     }
 
     public void updateCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime, Float jobscore) {
@@ -242,13 +252,34 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         else
             return 0;
     }
-    public Cursor getAllJobs() {
-        try {
-            SQLiteDatabase db = this.getReadableDatabase();
-            Cursor res = db.rawQuery("select * from joboffer union all select * from currentjob order by jobscore desc", null);
-            return res;
-        } catch (SQLException mSQLException) {
-            throw mSQLException;
-        }
+//    public List<JobDetails> getAllJobs() {
+//        try {
+//            List<JobDetails> jobs = new ArrayList<JobDetails>();
+//            SQLiteDatabase db = this.getReadableDatabase();
+//
+//            Cursor resCj = db.rawQuery("select * from currentjob order by jobscore desc", null);
+//            //getCurrentJob()
+//            resCj.moveToFirst();
+//
+//
+//            Cursor res = db.rawQuery("select * from joboffer union all select * from currentjob order by jobscore desc", null);
+//
+//            while(!res.isAfterLast()) {
+//                jobIds.add(res.getInt(0)); //add the item
+//                res.moveToNext();
+//            }
+//
+//            return res;
+//        } catch (SQLException mSQLException) {
+//            throw mSQLException;
+//        }
+//    }
+
+    public Cursor getAllJobOffers() {
+        List<JobOffer> jobs = new ArrayList<JobOffer>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor res = db.rawQuery("select title, company, city, state, costofliving, commute, salary, bonus, retirementbenefits, leavetime, jobscore, _id from joboffer order by jobscore desc", null);
+        return res;
     }
 }
