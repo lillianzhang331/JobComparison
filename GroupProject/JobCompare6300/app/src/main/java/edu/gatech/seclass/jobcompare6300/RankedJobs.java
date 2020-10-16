@@ -93,11 +93,11 @@ public class RankedJobs extends AppCompatActivity {
     }
     private void BuildTable(final Cursor jobs){
         jobs.moveToFirst();
+        ArrayList<Integer> jobIdList = new ArrayList<Integer>();
+        final ArrayList<Integer> checkedJobIdList = new ArrayList<Integer>();
+
         do {
-            int totalJobs = jobs.getCount();
             int colCount = jobs.getColumnCount();
-            String title_company = jobs.getString(1) + ", " + jobs.getString(2);
-            String score = jobs.getString(colCount-1);
             final TableRow dataRow = new TableRow(this);
             dataRow.setLayoutParams(new TableLayout.LayoutParams(
                     TableLayout.LayoutParams.MATCH_PARENT,
@@ -105,9 +105,12 @@ public class RankedJobs extends AppCompatActivity {
             TableRow.LayoutParams params = new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
-            int cols = 2;
 
-            for (int j = 1; j < cols+1; j++) {
+            int cols = 2;
+            final Integer jobId = jobs.getInt(0);
+            Log.v(TAG,"Job ID List:" + jobIdList.toString());
+
+            for (int j = 0; j < cols+1; j++) {
                 if(j==1) {
                     final CheckBox cb = new CheckBox(this);
                     cb.setLayoutParams(params);
@@ -118,11 +121,14 @@ public class RankedJobs extends AppCompatActivity {
                     cb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (cb.isChecked())
-                                checkboxCounter += 1;
+                            if (cb.isChecked()) {
+                                if (!checkedJobIdList.contains(jobId))
+                                    checkedJobIdList.add(jobId);
+                            }
                             else
-                                checkboxCounter -= 1;
-                            Log.v(TAG, checkboxCounter.toString());
+                                if (checkedJobIdList.contains(jobId))
+                                    checkedJobIdList.remove(jobId);
+                            Log.v(TAG, "Job ID List:" + checkedJobIdList.toString());
                         }
                     });
                 }
