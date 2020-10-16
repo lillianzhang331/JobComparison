@@ -1,6 +1,7 @@
 package edu.gatech.seclass.jobcompare6300;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
 import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
 import edu.gatech.seclass.jobcompare6300.model.JobManager;
+import edu.gatech.seclass.jobcompare6300.model.JobOffer;
 
 public class JobComparison extends AppCompatActivity {
     private TextView job1Title, job2Title;
@@ -81,7 +83,68 @@ public class JobComparison extends AppCompatActivity {
             }
         }
         else if(fromIntent.getExtras().getString("activity").equals("rankedjobs")){
+            String job1Id = fromIntent.getExtras().getString("job1Id");
+            String job2Id = fromIntent.getExtras().getString("job2Id");
 
+            if(Integer.parseInt(job1Id)>0) {
+                JobOffer job1;
+                job1 = job.getJobOffer(Integer.parseInt(job1Id));
+                job1Title.setText(job1.getTitle());
+                job1Company.setText(job1.getCompany());
+                String location1 = job1.getCity() + "," + job1.getState();
+                job1Location.setText(location1);
+                job1Commute.setText(job1.getCommute().toString());
+                String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper,
+                        job1.getCostOfLiving().toString(), job1.getSalary().toString());
+                job1Salary.setText(adjustedSalary);
+                String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper,
+                        job1.getCostOfLiving().toString(), job1.getBonus().toString());
+                job1Bonus.setText(adjustedBonus);
+                job1RetirementBenefits.setText(job1.getRetirementBenefits().toString());
+                job1LeaveTime.setText(job1.getLeaveTime().toString());
+            }
+            else {
+                CurrentJob job1;
+                job1 = job.getCurrentJob();
+                job1Title.setText(job1.getTitle());
+                job1Company.setText(job1.getCompany());
+                String location1 = job1.getCity() + "," + job1.getState();
+                job1Location.setText(location1);
+                job1Commute.setText(job1.getCommute().toString());
+                job1Salary.setText(job1.getSalary().toString());
+                job1Bonus.setText(job1.getBonus().toString());
+                job1RetirementBenefits.setText(job1.getRetirementBenefits().toString());
+                job1LeaveTime.setText(job1.getLeaveTime().toString());
+            }
+
+            if(Integer.parseInt(job2Id)>0) {
+                JobOffer job2 = job.getJobOffer(Integer.parseInt(job2Id));
+                job2Title.setText(job2.getTitle());
+                job2Company.setText(job2.getCompany());
+                String location2 = job2.getCity() + "," + job2.getState();
+                job2Location.setText(location2);
+                job2Commute.setText(job2.getCommute().toString());
+                String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper,
+                        job2.getCostOfLiving().toString(), job2.getSalary().toString());
+                job2Salary.setText(adjustedSalary);
+                String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper,
+                        job2.getCostOfLiving().toString(), job2.getBonus().toString());
+                job2Bonus.setText(adjustedBonus);
+                job2RetirementBenefits.setText(job2.getRetirementBenefits().toString());
+                job2LeaveTime.setText(job2.getLeaveTime().toString());
+            }
+            else if (Integer.parseInt(job2Id)==0){
+                CurrentJob job2 = job.getCurrentJob();
+                job2Title.setText(job2.getTitle());
+                job2Company.setText(job2.getCompany());
+                String location2 = job2.getCity() + "," + job2.getState();
+                job2Location.setText(location2);
+                job2Commute.setText(job2.getCommute().toString());
+                job2Salary.setText(job2.getSalary().toString());
+                job2Bonus.setText(job2.getBonus().toString());
+                job2RetirementBenefits.setText(job2.getRetirementBenefits().toString());
+                job2LeaveTime.setText(job2.getLeaveTime().toString());
+            }
         }
         Button returnToMain = (Button) findViewById(R.id.returnToMainMenuButtonID);
         Button compareAnother = (Button) findViewById(R.id.makeAnotherComparisonButtonID);

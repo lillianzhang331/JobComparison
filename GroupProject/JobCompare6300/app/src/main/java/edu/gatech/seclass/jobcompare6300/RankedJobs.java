@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,7 +27,7 @@ import edu.gatech.seclass.jobcompare6300.model.JobOffer;
 public class RankedJobs extends AppCompatActivity {
     private TableLayout table_layout;
     private static String TAG = "MY VALUES";
-    final ArrayList<Integer> checkedJobIdList = new ArrayList<Integer>();
+    private ArrayList<Integer> checkedJobIdList = new ArrayList<Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,13 +83,24 @@ public class RankedJobs extends AppCompatActivity {
         rankedMakeComparison.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent makeComparison = new Intent(RankedJobs.this, JobComparison.class);
-                Bundle rankedJobsValues = new Bundle();
-                rankedJobsValues.putString("activity","rankedjobs");
-                makeComparison.putExtras(rankedJobsValues);
-                startActivity(makeComparison);
-                RankedJobs.this.finish();
+                if(checkedJobIdList.size() == 2) {
+                    Intent makeComparison = new Intent(RankedJobs.this, JobComparison.class);
+                    Bundle rankedJobsValues = new Bundle();
+                    rankedJobsValues.putString("activity", "rankedjobs");
+                    rankedJobsValues.putString("job1Id", checkedJobIdList.get(0).toString());
+                    rankedJobsValues.putString("job2Id", checkedJobIdList.get(1).toString());
+                    makeComparison.putExtras(rankedJobsValues);
+                    startActivity(makeComparison);
+                    RankedJobs.this.finish();
+                }
+                else {
+                    if (checkedJobIdList.size() <=1)
+                        Toast.makeText(view.getContext(), "Select at least 2 Jobs from the " +
+                                "list to Compare", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(view.getContext(), "Select only 2 Jobs from the list" +
+                                "to Compare", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
