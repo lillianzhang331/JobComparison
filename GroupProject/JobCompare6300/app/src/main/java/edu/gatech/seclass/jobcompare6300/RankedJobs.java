@@ -140,8 +140,10 @@ public class RankedJobs extends AppCompatActivity {
                 tv.setTextSize(24);
                 tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
                 tv.setPadding(0, 5, 100, 5);
-                if (jobId == 0 && j == 1)
-                    tv.setText(jobs.getString(j)+"(Current)");
+                if (jobId == 0 && j == 1) {
+                    String str = jobs.getString(j) + "(Current)";
+                    tv.setText(str);
+                }
                 else
                     tv.setText(jobs.getString(j));
                 dataRow.addView(tv);
