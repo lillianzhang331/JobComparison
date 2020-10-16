@@ -26,7 +26,8 @@ import edu.gatech.seclass.jobcompare6300.model.JobOffer;
 public class RankedJobs extends AppCompatActivity {
     private TableLayout table_layout;
     private static String TAG = "MY VALUES";
-    private Integer checkboxCounter = 0;
+    final ArrayList<Integer> checkedJobIdList = new ArrayList<Integer>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,19 +37,6 @@ public class RankedJobs extends AppCompatActivity {
         JobManager job = new JobManager(dbHelper);
 
         Button rankedMakeComparison = (Button) findViewById(R.id.rankedMakeComparisonButtonID);
-        rankedMakeComparison.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent makeComparison = new Intent(RankedJobs.this, JobComparison.class);
-                Bundle rankedJobsValues = new Bundle();
-                rankedJobsValues.putString("activity","rankedjobs");
-                makeComparison.putExtras(rankedJobsValues);
-                startActivity(makeComparison);
-                RankedJobs.this.finish();
-            }
-        });
-
-
 
         ComparisonSettingsModel settings = new ComparisonSettingsModel(dbHelper);
         Float commuteWt = (float) settings.getCommuteWeight();
@@ -90,11 +78,23 @@ public class RankedJobs extends AppCompatActivity {
         int totalJobs = jobs.getCount();
         table_layout = findViewById(R.id.tableLayout);
         BuildTable(jobs);
+
+        rankedMakeComparison.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent makeComparison = new Intent(RankedJobs.this, JobComparison.class);
+                Bundle rankedJobsValues = new Bundle();
+                rankedJobsValues.putString("activity","rankedjobs");
+                makeComparison.putExtras(rankedJobsValues);
+                startActivity(makeComparison);
+                RankedJobs.this.finish();
+            }
+        });
     }
     private void BuildTable(final Cursor jobs){
         jobs.moveToFirst();
         ArrayList<Integer> jobIdList = new ArrayList<Integer>();
-        final ArrayList<Integer> checkedJobIdList = new ArrayList<Integer>();
 
         do {
             int colCount = jobs.getColumnCount();
@@ -108,9 +108,10 @@ public class RankedJobs extends AppCompatActivity {
 
             int cols = 2;
             final Integer jobId = jobs.getInt(0);
+            jobIdList.add(jobId);
             Log.v(TAG,"Job ID List:" + jobIdList.toString());
 
-            for (int j = 0; j < cols+1; j++) {
+            for (int j = 1; j < cols+1; j++) {
                 if(j==1) {
                     final CheckBox cb = new CheckBox(this);
                     cb.setLayoutParams(params);
@@ -126,9 +127,8 @@ public class RankedJobs extends AppCompatActivity {
                                     checkedJobIdList.add(jobId);
                             }
                             else
-                                if (checkedJobIdList.contains(jobId))
-                                    checkedJobIdList.remove(jobId);
-                            Log.v(TAG, "Job ID List:" + checkedJobIdList.toString());
+                                checkedJobIdList.remove(jobId);
+                            Log.v(TAG, "Checked Job ID List:" + checkedJobIdList.toString());
                         }
                     });
                 }

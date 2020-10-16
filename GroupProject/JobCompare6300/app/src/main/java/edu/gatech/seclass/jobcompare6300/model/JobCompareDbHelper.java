@@ -91,7 +91,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
     public void createCurrentJob (String title, String company, String city, String state, Integer costofliving, Float commute, Float salary, Float bonus, Integer retirementbenefits, Integer leavetime, Float jobscore) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-
+        contentValues.put("_id",0);
         contentValues.put("title", title);
         contentValues.put("company", company);
         contentValues.put("city", city);
