@@ -61,7 +61,6 @@ public class RankedJobs extends AppCompatActivity {
 
             dbHelper.updateJobOfferScore(row, jobScore);
             jobScore = jo.getJobScore();
-            Log.v(TAG, jobScore.toString());
         }
         CurrentJob cj = job.getCurrentJob();
         Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, cj.getCostOfLiving().toString(), cj.getSalary().toString()));
@@ -73,6 +72,7 @@ public class RankedJobs extends AppCompatActivity {
         Float e = (commuteWt/sumWt)*(Float.parseFloat(cj.getCommute().toString())*adjustedSalary/8);
         Float jobScore = a + b + c + d - e;
         dbHelper.updateCurrentJobScore(jobScore);
+
 
         Cursor jobs = job.getAllJobs();
         int totalJobs = jobs.getCount();
@@ -105,6 +105,8 @@ public class RankedJobs extends AppCompatActivity {
             TableRow.LayoutParams params = new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
+            Log.v(TAG, "ID:" + jobs.getString(0) + "    JO Score:" +
+                    jobs.getString(colCount-1) + "       Title:" + jobs.getString(1));
 
             int cols = 2;
             final Integer jobId = jobs.getInt(0);
@@ -116,7 +118,7 @@ public class RankedJobs extends AppCompatActivity {
                     final CheckBox cb = new CheckBox(this);
                     cb.setLayoutParams(params);
                     cb.setGravity(Gravity.CENTER_VERTICAL);
-                    cb.setPadding(0, 5, 200, 5);
+                    cb.setPadding(0, 5, 180, 5);
 
                     dataRow.addView(cb);
                     cb.setOnClickListener(new View.OnClickListener() {
@@ -137,8 +139,11 @@ public class RankedJobs extends AppCompatActivity {
                 tv.setGravity(Gravity.CENTER_VERTICAL);
                 tv.setTextSize(24);
                 tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-                tv.setPadding(0, 5, 300, 5);
-                tv.setText(jobs.getString(j));
+                tv.setPadding(0, 5, 100, 5);
+                if (jobId == 0 && j == 1)
+                    tv.setText(jobs.getString(j)+"(Current)");
+                else
+                    tv.setText(jobs.getString(j));
                 dataRow.addView(tv);
             }
             table_layout.addView(dataRow);
