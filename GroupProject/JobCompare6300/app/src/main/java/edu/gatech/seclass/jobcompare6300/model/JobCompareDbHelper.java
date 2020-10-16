@@ -237,7 +237,7 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select costofliving from currentjob", null );
         res.moveToFirst();
-        if (res!= null)
+        if (res.getCount()> 0)
             return res.getInt(0);
         else
             return 0;

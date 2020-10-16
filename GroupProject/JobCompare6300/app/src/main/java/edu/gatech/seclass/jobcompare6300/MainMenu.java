@@ -55,9 +55,7 @@ public class MainMenu extends AppCompatActivity {
                 } else {
                     if (!dbHelper.isCurrentJobAvailable())
                         Toast.makeText(view.getContext(), "At least 1 Job Offer and Current" +
-                                " Job is required\nAdd Current Job using ENTER" +
-                                " CURRENT JOB or Add Job Offers using ENTER JOB OFFER",
-                                Toast.LENGTH_LONG).show();
+                                " Job are required to Compare", Toast.LENGTH_LONG).show();
                     else
                         Toast.makeText(view.getContext(), "Not enough Job Offers" +
                                         " \nAdd jobs using ENTER JOB OFFER",

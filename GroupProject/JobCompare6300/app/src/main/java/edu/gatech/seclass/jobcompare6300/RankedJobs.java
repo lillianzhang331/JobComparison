@@ -28,7 +28,7 @@ public class RankedJobs extends AppCompatActivity {
     private TableLayout table_layout;
     private static String TAG = "MY VALUES";
     private ArrayList<Integer> checkedJobIdList = new ArrayList<Integer>();
-
+    private Integer checkboxCounter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,17 +63,18 @@ public class RankedJobs extends AppCompatActivity {
             dbHelper.updateJobOfferScore(row, jobScore);
             jobScore = jo.getJobScore();
         }
-        CurrentJob cj = job.getCurrentJob();
-        Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, cj.getCostOfLiving().toString(), cj.getSalary().toString()));
-        Float adjustedBonus = Float.parseFloat(myApplication.adjustedYearlyBonus(dbHelper, cj.getCostOfLiving().toString(), cj.getBonus().toString()));
-        Float a = (salaryWt/sumWt)*adjustedSalary;
-        Float b = (bonusWt/sumWt)*adjustedBonus;
-        Float c = (retirementWt/sumWt)*(Float.parseFloat(cj.getRetirementBenefits().toString())*adjustedSalary/100);
-        Float d = (leaveWt/sumWt)*(Float.parseFloat(cj.getLeaveTime().toString())*adjustedSalary/260);
-        Float e = (commuteWt/sumWt)*(Float.parseFloat(cj.getCommute().toString())*adjustedSalary/8);
-        Float jobScore = a + b + c + d - e;
-        dbHelper.updateCurrentJobScore(jobScore);
-
+        if (dbHelper.isCurrentJobAvailable()) {
+            CurrentJob cj = job.getCurrentJob();
+            Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, cj.getCostOfLiving().toString(), cj.getSalary().toString()));
+            Float adjustedBonus = Float.parseFloat(myApplication.adjustedYearlyBonus(dbHelper, cj.getCostOfLiving().toString(), cj.getBonus().toString()));
+            Float a = (salaryWt / sumWt) * adjustedSalary;
+            Float b = (bonusWt / sumWt) * adjustedBonus;
+            Float c = (retirementWt / sumWt) * (Float.parseFloat(cj.getRetirementBenefits().toString()) * adjustedSalary / 100);
+            Float d = (leaveWt / sumWt) * (Float.parseFloat(cj.getLeaveTime().toString()) * adjustedSalary / 260);
+            Float e = (commuteWt / sumWt) * (Float.parseFloat(cj.getCommute().toString()) * adjustedSalary / 8);
+            Float jobScore = a + b + c + d - e;
+            dbHelper.updateCurrentJobScore(jobScore);
+        }
 
         Cursor jobs = job.getAllJobs();
         int totalJobs = jobs.getCount();
@@ -117,14 +118,14 @@ public class RankedJobs extends AppCompatActivity {
             TableRow.LayoutParams params = new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
-            Log.v(TAG, "ID:" + jobs.getString(0) + "    JO Score:" +
-                    jobs.getString(colCount-1) + "       Title:" + jobs.getString(1));
+            Log.v(TAG, "ID:" + jobs.getString(0) + " JO Score:" +
+                    jobs.getString(colCount-1) + " Title:" + jobs.getString(1) +
+                    " Col:" + jobs.getString(5) + " Com:" + jobs.getString(6)+ " Sal:" +
+                    jobs.getString(7) + " Bon:" + jobs.getString(8) + " Ben:" +
+                    jobs.getString(9) + "% Leave:" + jobs.getString(10));
 
             int cols = 2;
             final Integer jobId = jobs.getInt(0);
-            jobIdList.add(jobId);
-            Log.v(TAG,"Job ID List:" + jobIdList.toString());
-
             for (int j = 1; j < cols+1; j++) {
                 if(j==1) {
                     final CheckBox cb = new CheckBox(this);
@@ -136,12 +137,22 @@ public class RankedJobs extends AppCompatActivity {
                     cb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+
                             if (cb.isChecked()) {
+                                checkboxCounter+=1;
                                 if (!checkedJobIdList.contains(jobId))
                                     checkedJobIdList.add(jobId);
+                                if (checkboxCounter > 2) {
+                                    cb.toggle();
+                                    checkboxCounter -= 1;
+                                    checkedJobIdList.remove(jobId);
+                                }
                             }
-                            else
+                            else {
+                                checkboxCounter -= 1;
                                 checkedJobIdList.remove(jobId);
+                            }
+                            Log.v(TAG, "Checkbox Counter:" + checkboxCounter.toString());
                             Log.v(TAG, "Checked Job ID List:" + checkedJobIdList.toString());
                         }
                     });
