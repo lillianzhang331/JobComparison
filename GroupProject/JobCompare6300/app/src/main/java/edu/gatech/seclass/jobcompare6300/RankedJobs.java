@@ -117,7 +117,8 @@ public class RankedJobs extends AppCompatActivity {
                     TableLayout.LayoutParams.WRAP_CONTENT));
             TableRow.LayoutParams params = new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT);
+                    TableRow.LayoutParams.WRAP_CONTENT
+                    );
             Log.v(TAG, "ID:" + jobs.getString(0) + " JO Score:" +
                     jobs.getString(colCount-1) + " Title:" + jobs.getString(1) +
                     " Col:" + jobs.getString(5) + " Com:" + jobs.getString(6)+ " Sal:" +
@@ -129,9 +130,11 @@ public class RankedJobs extends AppCompatActivity {
             for (int j = 1; j < cols+1; j++) {
                 if(j==1) {
                     final CheckBox cb = new CheckBox(this);
-                    cb.setLayoutParams(params);
-                    cb.setGravity(Gravity.CENTER_VERTICAL);
-                    cb.setPadding(0, 5, 180, 5);
+                    //params.setMargins(0,0,0,0);
+
+                    //cb.setLayoutParams(params);
+                    //cb.setGravity(Gravity.CENTER);
+                    //cb.setPadding(0, 0, 0, 0);
 
                     dataRow.addView(cb);
                     cb.setOnClickListener(new View.OnClickListener() {
@@ -158,13 +161,17 @@ public class RankedJobs extends AppCompatActivity {
                     });
                 }
                 TextView tv = new TextView(this);
+                params.setMargins(25,10,0,0);
+                if (j==1)
+                    tv.setWidth(500);
                 tv.setLayoutParams(params);
-                tv.setGravity(Gravity.CENTER_VERTICAL);
+                //tv.setGravity(Gravity.CENTER);
                 tv.setTextSize(24);
+                tv.setSingleLine(false);
                 tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-                tv.setPadding(0, 5, 100, 5);
+                //tv.setPadding(0, 0, 0, 0);
                 if (jobId == 0 && j == 1) {
-                    String str = jobs.getString(j) + "(Current)";
+                    String str = jobs.getString(j) + " (Current)";
                     tv.setText(str);
                 }
                 else
