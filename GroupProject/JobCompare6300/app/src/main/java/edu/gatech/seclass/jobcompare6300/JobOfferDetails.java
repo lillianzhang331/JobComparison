@@ -107,7 +107,7 @@ public class JobOfferDetails extends AppCompatActivity {
         if (!validCity){jobCity.setError("No City Input");}
         if (!validState){jobState.setError("No State Input");}
         if (!validCostOfLiving){jobCostOfLiving.setError("No Cost of Living Index Input");}
-        if (!validCommute){jobCommute.setError("No Commute Input");}
+        //if (!validCommute){jobCommute.setError("No Commute Input");}
         if (!validSalary){jobSalary.setError("No Salary Input");}
         if (!validBonus){jobBonus.setError("No Bonus Input");}
         if (!validRetirementBenefits){jobRetirementBenefits.setError("No Retirement Benefits Input");}
@@ -121,6 +121,7 @@ public class JobOfferDetails extends AppCompatActivity {
         if(!isBonusNumber){jobBonus.setError("Invalid Bonus Input");}
         if(!isBenefitsNumber){jobRetirementBenefits.setError("Invalid Benefits Input");}
         if(!isLeaveNumber){jobLeaveTime.setError("Invalid Leave Time Input");}
+        if (!validCommute){jobCommute.setError("No Commute Input");}
 
         boolean allValidInput = validTitle & validCompany & validCity & validState & validCommute
                 & validSalary & validBonus & validRetirementBenefits & validLeaveTime

@@ -122,7 +122,7 @@ public class JobTests {
         onView(withId(R.id.currentCompanyID)).perform(clearText(), replaceText("Chevron"));
         onView(withId(R.id.currentCityID)).perform(clearText(), replaceText("Houston"));
         onView(withId(R.id.currentStateID)).perform(clearText(), replaceText("TX"));
-        onView(withId(R.id.currentCostID)).perform(clearText(), replaceText("14"));
+        onView(withId(R.id.currentCostID)).perform(clearText(), replaceText("145145 "));
         onView(withId(R.id.currentCommuteID)).perform(clearText(), replaceText("1.5"));
         onView(withId(R.id.currentSalaryID)).perform(clearText(), replaceText("250000"));
         onView(withId(R.id.currentBonusID)).perform(clearText(), replaceText("15000"));
@@ -136,6 +136,97 @@ public class JobTests {
                 .check(matches(not(isDisplayed())));
     }
 
-    /* NEXT TEST SET: WRITE SAME TEST FOR JOB OFFERS */
+    //Test #17: saving job details in enter job offer with all fields filled with valid data
+    @Test
+    public void Test17() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San Jose"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10000"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerSaveButtonID)).perform(click());
+        onView(withText("Job details saved")).inRoot(new Toastmatcher()).check(matches((isDisplayed())));
+    }
 
+    //Test #18: saving job details in enter job offer with fields partially filled with valid data
+    @Test
+    public void Test18() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San Jose"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        //onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10000"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerSaveButtonID)).perform(click());
+        onView(withId(R.id.offerCommuteID)).check(matches(hasErrorText("No Commute Input")));
+    }
+
+    //Test #19a: saving invalid data entry in enter job offer - number in City string
+    @Test
+    public void Test19a() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San J0s3"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10000"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerSaveButtonID)).perform(click());
+        onView(withId(R.id.offerCityID)).check(matches(hasErrorText("Invalid City Input")));
+    }
+
+    //Test #19b: saving invalid data entry in enter job offer - alphabet in salary
+    @Test
+    public void Test19b() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San Jose"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10ooo"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerSaveButtonID)).perform(click());
+        onView(withId(R.id.offerBonusID)).check(matches(hasErrorText("Invalid Bonus Input")));
+    }
+
+    //Test #20: exit without saving of job details of enter job offer when canceled
+    @Test
+    public void Test20() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San Jose"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10000"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerCancelButtonID)).perform(click());
+
+        intended(hasComponent(MainMenu.class.getName()));
+
+        onView(withText("Job details saved")).inRoot(new Toastmatcher()).withFailureHandler(new NoToastMessage())
+                .check(matches(not(isDisplayed())));
+    }
 }
