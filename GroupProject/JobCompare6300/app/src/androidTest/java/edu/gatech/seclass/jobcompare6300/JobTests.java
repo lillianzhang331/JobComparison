@@ -226,7 +226,7 @@ public class JobTests {
 
         intended(hasComponent(MainMenu.class.getName()));
 
-        onView(withText("Job details saved")).inRoot(new Toastmatcher()).withFailureHandler(new NoToastMessage())
-                .check(matches(not(isDisplayed())));
+        //onView(withText("Job details saved")).inRoot(new Toastmatcher()).withFailureHandler(new NoToastMessage())
+        //        .check(matches(not(isDisplayed())));
     }
 }

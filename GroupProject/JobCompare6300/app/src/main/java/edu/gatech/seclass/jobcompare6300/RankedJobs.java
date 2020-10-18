@@ -36,61 +36,50 @@ public class RankedJobs extends AppCompatActivity {
         MyApplication myApplication = (MyApplication) getApplication();
         JobCompareDbHelper dbHelper = new JobCompareDbHelper(this);
         JobManager job = new JobManager(dbHelper);
+        ComparisonSettingsModel settings = new ComparisonSettingsModel(dbHelper);
 
         Button rankedMakeComparison = (Button) findViewById(R.id.rankedMakeComparisonButtonID);
 
         Integer numJobs = dbHelper.getJobOfferNumRowIDs();
         for (int row = 1; row <= numJobs; row++) {
             JobOffer jo = job.getJobOffer(row);
-            Float jobScore = calcJobOfferScore(jo);
+            Float jobScore = myApplication.calcJobOfferScore(dbHelper, jo, settings);
             dbHelper.updateJobOfferScore(row, jobScore);
         }
-        CurrentJob cj = job.getCurrentJob();
-        Float jobScore = calcCurrentJobScore(cj);
-        dbHelper.updateCurrentJobScore(jobScore);
-    }
+        if (dbHelper.isCurrentJobAvailable()) {
+            CurrentJob cj = job.getCurrentJob();
+            Float jobScore = myApplication.calcCurrentJobScore(dbHelper, cj, settings);
+            dbHelper.updateCurrentJobScore(jobScore);
+        }
 
-    public float calcJobOfferScore(JobOffer cj){
-        MyApplication myApplication = (MyApplication) getApplication();
-        JobCompareDbHelper dbHelper = new JobCompareDbHelper(this);
-        JobManager job = new JobManager(dbHelper);
-        Float commuteWt = (float) myApplication.getCommuteWeight();
-        Float salaryWt = (float) myApplication.getSalaryWeight();
-        Float bonusWt = (float) myApplication.getBonusWeight();
-        Float retirementWt = (float) myApplication.getRetirementbenefitsWeight();
-        Float leaveWt = (float) myApplication.getLeaveWeight();
-        Float sumWt = commuteWt + salaryWt + bonusWt + retirementWt + leaveWt;
-        Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, cj.getCostOfLiving().toString(), cj.getSalary().toString()));
-        Float adjustedBonus = Float.parseFloat(myApplication.adjustedYearlyBonus(dbHelper, cj.getCostOfLiving().toString(), cj.getBonus().toString()));
-        Float a = (salaryWt/sumWt)*adjustedSalary;
-        Float b = (bonusWt/sumWt)*adjustedBonus;
-        Float c = (retirementWt/sumWt)*(Float.parseFloat(cj.getRetirementBenefits().toString())*adjustedSalary/100);
-        Float d = (leaveWt/sumWt)*(Float.parseFloat(cj.getLeaveTime().toString())*adjustedSalary/260);
-        Float e = (commuteWt/sumWt)*(Float.parseFloat(cj.getCommute().toString())*adjustedSalary/8);
-        Float jobScore = a + b + c + d - e;
-        return jobScore;
-    }
-    public float calcCurrentJobScore(CurrentJob cj){
-        MyApplication myApplication = (MyApplication) getApplication();
-        JobCompareDbHelper dbHelper = new JobCompareDbHelper(this);
-        JobManager job = new JobManager(dbHelper);
-        Float commuteWt = (float) myApplication.getCommuteWeight();
-        Float salaryWt = (float) myApplication.getSalaryWeight();
-        Float bonusWt = (float) myApplication.getBonusWeight();
-        Float retirementWt = (float) myApplication.getRetirementbenefitsWeight();
-        Float leaveWt = (float) myApplication.getLeaveWeight();
-        Float sumWt = commuteWt + salaryWt + bonusWt + retirementWt + leaveWt;
-        Float adjustedSalary = Float.parseFloat(myApplication.adjustedYearlySalary(dbHelper, cj.getCostOfLiving().toString(), cj.getSalary().toString()));
-        Float adjustedBonus = Float.parseFloat(myApplication.adjustedYearlyBonus(dbHelper, cj.getCostOfLiving().toString(), cj.getBonus().toString()));
-        Float a = (salaryWt/sumWt)*adjustedSalary;
-        Float b = (bonusWt/sumWt)*adjustedBonus;
-        Float c = (retirementWt/sumWt)*(Float.parseFloat(cj.getRetirementBenefits().toString())*adjustedSalary/100);
-        Float d = (leaveWt/sumWt)*(Float.parseFloat(cj.getLeaveTime().toString())*adjustedSalary/260);
-        Float e = (commuteWt/sumWt)*(Float.parseFloat(cj.getCommute().toString())*adjustedSalary/8);
-        Float jobScore = a + b + c + d - e;
-        return jobScore;
-    }
+        Cursor jobs = job.getAllJobs();
+        table_layout = findViewById(R.id.tableLayout);
+        BuildTable(jobs);
 
+        rankedMakeComparison.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkedJobIdList.size() == 2) {
+                    Intent makeComparison = new Intent(RankedJobs.this, JobComparison.class);
+                    Bundle rankedJobsValues = new Bundle();
+                    rankedJobsValues.putString("activity", "rankedjobs");
+                    rankedJobsValues.putString("job1Id", checkedJobIdList.get(0).toString());
+                    rankedJobsValues.putString("job2Id", checkedJobIdList.get(1).toString());
+                    makeComparison.putExtras(rankedJobsValues);
+                    startActivity(makeComparison);
+                    RankedJobs.this.finish();
+                }
+                else {
+                    if (checkedJobIdList.size() <=1)
+                        Toast.makeText(view.getContext(), "Select at least 2 Jobs from the " +
+                                "list to Compare", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(view.getContext(), "Select only 2 Jobs from the list" +
+                                "to Compare", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
     private void BuildTable(Cursor jobs){
         jobs.moveToFirst();

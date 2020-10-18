@@ -135,15 +135,12 @@ public class JobOfferDetails extends AppCompatActivity {
                     Float.parseFloat(inputSalary), Float.parseFloat(inputBonus),
                     Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime), jobScore);
 
+            Toast.makeText(
+                    getApplicationContext(),"Job details saved", Toast.LENGTH_LONG).show();
             Intent savedIntent = new Intent(JobOfferDetails.this,
                     SavedJobOffer.class);
             startActivity(savedIntent);
             JobOfferDetails.this.finish();
-
-            Toast.makeText(
-                    getApplicationContext(),"Job details saved", Toast.LENGTH_LONG).show();
-            Intent myIntent = new Intent(this,  MainMenu.class);
-            startActivity(myIntent);
         }
     }
 

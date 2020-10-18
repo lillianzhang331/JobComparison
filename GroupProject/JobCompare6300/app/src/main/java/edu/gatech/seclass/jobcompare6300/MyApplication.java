@@ -3,7 +3,11 @@ package edu.gatech.seclass.jobcompare6300;
 import android.app.Application;
 import android.icu.math.BigDecimal;
 
+import edu.gatech.seclass.jobcompare6300.model.ComparisonSettingsModel;
+import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
 import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+import edu.gatech.seclass.jobcompare6300.model.JobManager;
+import edu.gatech.seclass.jobcompare6300.model.JobOffer;
 
 
 public class MyApplication extends Application {
@@ -71,5 +75,54 @@ public class MyApplication extends Application {
         BigDecimal bd = new BigDecimal(Float.toString(value));
         bd = bd.setScale(decimals, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
+    }
+    public float calcJobOfferScore(JobCompareDbHelper dbHelper, JobOffer jo,
+                                     ComparisonSettingsModel settings){
+
+        Float commuteWt = (float) settings.getCommuteWeight();
+        Float salaryWt = (float) settings.getSalaryWeight();
+        Float bonusWt = (float) settings.getBonusWeight();
+        Float retirementWt = (float) settings.getRetirementbenefitsWeight();
+        Float leaveWt = (float) settings.getLeaveWeight();
+        Float sumWt = commuteWt + salaryWt + bonusWt + retirementWt + leaveWt;
+        Float adjustedSalary = Float.parseFloat(adjustedYearlySalary(dbHelper,
+                jo.getCostOfLiving().toString(), jo.getSalary().toString()));
+        Float adjustedBonus = Float.parseFloat(adjustedYearlyBonus(dbHelper,
+                jo.getCostOfLiving().toString(), jo.getBonus().toString()));
+        Float a = (salaryWt/sumWt)*adjustedSalary;
+        Float b = (bonusWt/sumWt)*adjustedBonus;
+        Float c = (retirementWt/sumWt)*(Float.parseFloat(jo.getRetirementBenefits().toString())*
+                adjustedSalary/100);
+        Float d = (leaveWt/sumWt)*(Float.parseFloat(jo.getLeaveTime().toString())*
+                adjustedSalary/260);
+        Float e = (commuteWt/sumWt)*(Float.parseFloat(jo.getCommute().toString())*
+                adjustedSalary/8);
+        Float jobScore = a + b + c + d - e;
+        return jobScore;
+    }
+
+    public float calcCurrentJobScore(JobCompareDbHelper dbHelper, CurrentJob cj,
+                                     ComparisonSettingsModel settings){
+
+        Float commuteWt = (float) settings.getCommuteWeight();
+        Float salaryWt = (float) settings.getSalaryWeight();
+        Float bonusWt = (float) settings.getBonusWeight();
+        Float retirementWt = (float) settings.getRetirementbenefitsWeight();
+        Float leaveWt = (float) settings.getLeaveWeight();
+        Float sumWt = commuteWt + salaryWt + bonusWt + retirementWt + leaveWt;
+        Float adjustedSalary = Float.parseFloat(adjustedYearlySalary(dbHelper,
+                cj.getCostOfLiving().toString(), cj.getSalary().toString()));
+        Float adjustedBonus = Float.parseFloat(adjustedYearlyBonus(dbHelper,
+                cj.getCostOfLiving().toString(), cj.getBonus().toString()));
+        Float a = (salaryWt/sumWt)*adjustedSalary;
+        Float b = (bonusWt/sumWt)*adjustedBonus;
+        Float c = (retirementWt/sumWt)*(Float.parseFloat(cj.getRetirementBenefits().toString())*
+                adjustedSalary/100);
+        Float d = (leaveWt/sumWt)*(Float.parseFloat(cj.getLeaveTime().toString())*
+                adjustedSalary/260);
+        Float e = (commuteWt/sumWt)*(Float.parseFloat(cj.getCommute().toString())*
+                adjustedSalary/8);
+        Float jobScore = a + b + c + d - e;
+        return jobScore;
     }
 }
