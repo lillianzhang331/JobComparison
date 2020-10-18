@@ -138,15 +138,17 @@ public class CurrentJobDetails extends AppCompatActivity {
                     Integer.parseInt(inputCostOfLiving), Float.parseFloat(inputCommute),
                     Float.parseFloat(inputSalary), Float.parseFloat(inputBonus),
                     Integer.parseInt(inputRetirementBenefits), Integer.parseInt(inputLeaveTime), jobScore);
+            Toast.makeText(
+                    getApplicationContext(),"Job details saved", Toast.LENGTH_LONG).show();
 
             Intent retToMain = new Intent(CurrentJobDetails.this, MainMenu.class);
             startActivity(retToMain);
             CurrentJobDetails.this.finish();
 
-            Toast.makeText(
-                    getApplicationContext(),"Job details saved", Toast.LENGTH_LONG).show();
-            Intent myIntent = new Intent(this,  MainMenu.class);
-            startActivity(myIntent);
+            //Toast.makeText(
+            //        getApplicationContext(),"Job details saved", Toast.LENGTH_LONG).show();
+            //Intent myIntent = new Intent(this,  MainMenu.class);
+            //startActivity(myIntent);
         }
     }
 
