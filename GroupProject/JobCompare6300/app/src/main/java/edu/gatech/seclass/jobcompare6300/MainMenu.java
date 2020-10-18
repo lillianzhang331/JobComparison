@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
+
 public class MainMenu extends AppCompatActivity {
+    JobCompareDbHelper dbHelper = new JobCompareDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +21,7 @@ public class MainMenu extends AppCompatActivity {
         Button editCurrentJob = (Button) findViewById(R.id.editCurrentJobButtonID);
         Button enterJobOffer = (Button) findViewById(R.id.enterJobOfferButtonID);
         Button editComparisonSettings = (Button) findViewById(R.id.editComparisonSettingButtonID);
-        Button makeComparison = (Button) findViewById(R.id.compareJobsButtonID);
+        final Button makeComparison = (Button) findViewById(R.id.compareJobsButtonID);
 
         editCurrentJob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,8 +47,20 @@ public class MainMenu extends AppCompatActivity {
         makeComparison.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent goToRanked = new Intent(MainMenu.this, RankedJobs.class);
-                startActivity(goToRanked);
+                if ((dbHelper.getJobOfferNumRowIDs() > 0 && dbHelper.isCurrentJobAvailable()) ||
+                        dbHelper.getJobOfferNumRowIDs() > 1) {
+                    makeComparison.setEnabled(true);
+                    Intent goToRanked = new Intent(MainMenu.this, RankedJobs.class);
+                    startActivity(goToRanked);
+                } else {
+                    if (!dbHelper.isCurrentJobAvailable())
+                        Toast.makeText(view.getContext(), "At least 1 Job Offer and Current" +
+                                " Job are required to Compare", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(view.getContext(), "Not enough Job Offers" +
+                                        " \nAdd jobs using ENTER JOB OFFER",
+                                Toast.LENGTH_LONG).show();
+                }
             }
         });
 

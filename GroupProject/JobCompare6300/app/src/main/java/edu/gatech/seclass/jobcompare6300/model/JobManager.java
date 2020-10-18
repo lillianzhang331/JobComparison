@@ -107,7 +107,7 @@ public class JobManager {
         return jo;
     }
 
-    public void compareJobOffers(){
-
+    public Cursor getAllJobs(){
+        return dbHelper.getAllJobs();
     }
 }
