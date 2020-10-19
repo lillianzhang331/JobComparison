@@ -259,7 +259,7 @@ public class JobTests {
         onView(withText("At least 1 Job Offer and Current. Job are required to Compare"))
                 .inRoot(new Toastmatcher()).check(matches((isDisplayed())));
     }
-    /*@Test
+    @Test
     public void Test6() {
         InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("JobCompare.db");
         onView(withId(R.id.enterJobOfferButtonID)).perform(click());
@@ -290,7 +290,7 @@ public class JobTests {
         onView(withId(R.id.compareJobsButtonID)).perform(click());
         MyApplication myApplication = new MyApplication();
         int [] actuals = convertIntegers(myApplication.getJobIdList());
-        int[] expecteds = new int[]{1,2,3,4,0};
+        int[] expecteds = new int[]{1,2};
         Assert.assertArrayEquals(expecteds,actuals);
     }
     public static int[] convertIntegers(List<Integer> integers)
@@ -301,5 +301,5 @@ public class JobTests {
             ret[i] = integers.get(i).intValue();
         }
         return ret;
-    }*/
+    }
 }

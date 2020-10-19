@@ -20,9 +20,11 @@ public class MyApplication extends Application {
      * app is closed.
      */
     private Integer commuteWt=5, salaryWt=5, bonusWt=5, retirementbenefitsWt=5, leaveWt=5;
-    public ArrayList<Integer> jobIdList = new ArrayList<Integer>();
-    public void setJobIdList (ArrayList<Integer> jobIdList) {
-        this.jobIdList = jobIdList;
+    public static ArrayList<Integer> jobIdList = new ArrayList<>();
+    public void setJobIdList (ArrayList<Integer> list) {
+        for (int i=0; i<list.size(); i++) {
+            this.jobIdList.add(list.get(i));
+        }
     }
     public ArrayList<Integer> getJobIdList () {
         return this.jobIdList;
