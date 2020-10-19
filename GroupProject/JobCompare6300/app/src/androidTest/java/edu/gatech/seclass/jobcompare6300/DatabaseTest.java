@@ -1,61 +1,232 @@
 package edu.gatech.seclass.jobcompare6300;
 
-import android.content.Context;
-import android.util.Log;
-
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
 
-import edu.gatech.seclass.jobcompare6300.model.ComparisonSettingsModel;
-import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
-import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
-import edu.gatech.seclass.jobcompare6300.model.JobManager;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.clearText;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
+public class JobTests {
+    @Rule
+    public ActivityTestRule<MainMenu> rule = new ActivityTestRule<>(
+            MainMenu.class);
 
-public class DatabaseTest {
-    private JobCompareDbHelper dbHelper;
-    private JobManager job;
-    private MyApplication myApplication;
     @Before
     public void setUp() {
-        Context context = ApplicationProvider.getApplicationContext();
-        dbHelper = new JobCompareDbHelper(context);
-        myApplication = new MyApplication();
+        Intents.init();
     }
-    @After
-    public void closeDb() throws IOException {
-        dbHelper.close();
-    }
-    @Test
-    public void Test1() {
-        job = new JobManager(dbHelper);
-        CurrentJob currentJob = new CurrentJob(dbHelper);
-        //CurrentJobDetails currentJob = new CurrentJobDetails();
-        currentJob.setTitle("ML Engineer");
-        currentJob.setCompany("Tesla");
-        currentJob.setCity("San Francisco");
-        currentJob.setState("CA");
-        currentJob.setCostOfLiving(241);
-        currentJob.setCommute((float) 1.4);
-        currentJob.setSalary((float) 240000);
-        currentJob.setBonus((float) 16000.);
-        currentJob.setRetirementBenefits(50);
-        currentJob.setLeaveTime(20);
-        currentJob.save();
 
-        ComparisonSettingsModel comparisonSettingsModel = new ComparisonSettingsModel(dbHelper);
-        comparisonSettingsModel.setComparisonSettings(1, 1, 1, 1, 1);
-        float score = myApplication.calcCurrentJobScore(dbHelper,currentJob,comparisonSettingsModel);
-        float expectedJobScore = (float)70492.305;
-        Assert.assertEquals(expectedJobScore, score, 0.0000001);
+    @After
+    public void tearDown() {
+        Intents.release();
+        InstrumentationRegistry.getInstrumentation().getTargetContext().deleteDatabase("JobCompare.db");
+    }
+
+    //Test #13: saving job details in enter current job with all fields filled with valid data
+    @Test
+    public void Test13() {
+        onView(withId(R.id.editCurrentJobButtonID)).perform(click());
+        onView(withId(R.id.currentTitleID)).perform(clearText(), replaceText("Petroleum Engineer"));
+        onView(withId(R.id.currentCompanyID)).perform(clearText(), replaceText("Chevron"));
+        onView(withId(R.id.currentCityID)).perform(clearText(), replaceText("Houston"));
+        onView(withId(R.id.currentStateID)).perform(clearText(), replaceText("TX"));
+        onView(withId(R.id.currentCostID)).perform(clearText(), replaceText("145"));
+        onView(withId(R.id.currentCommuteID)).perform(clearText(), replaceText("1.5"));
+        onView(withId(R.id.currentSalaryID)).perform(clearText(), replaceText("250000"));
+        onView(withId(R.id.currentBonusID)).perform(clearText(), replaceText("15000"));
+        onView(withId(R.id.currentRetirementID)).perform(clearText(), replaceText("40"));
+        onView(withId(R.id.currentLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.currentSaveButtonID)).perform(click());
+        onView(withText("Job details saved")).inRoot(new Toastmatcher()).check(matches((isDisplayed())));
+    }
+
+    //Test #14: saving job details in enter current job with fields partially filled with valid data
+    @Test
+    public void Test14() {
+        onView(withId(R.id.editCurrentJobButtonID)).perform(click());
+        onView(withId(R.id.currentTitleID)).perform(clearText(), replaceText("Petroleum Engineer"));
+        onView(withId(R.id.currentCompanyID)).perform(clearText(), replaceText("Chevron"));
+        onView(withId(R.id.currentCityID)).perform(clearText(), replaceText("Houston"));
+        onView(withId(R.id.currentStateID)).perform(clearText(), replaceText("TX"));
+        onView(withId(R.id.currentCostID)).perform(clearText(), replaceText("145"));
+        //onView(withId(R.id.currentCommuteID)).perform(clearText(), replaceText("1.5"));
+        onView(withId(R.id.currentSalaryID)).perform(clearText(), replaceText("250000"));
+        onView(withId(R.id.currentBonusID)).perform(clearText(), replaceText("15000"));
+        onView(withId(R.id.currentRetirementID)).perform(clearText(), replaceText("40"));
+        onView(withId(R.id.currentLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.currentSaveButtonID)).perform(click());
+        onView(withId(R.id.currentCommuteID)).check(matches(hasErrorText("No Commute Input")));
+    }
+
+    //Test #15a: saving invalid data entry in enter current job - number in City string
+    @Test
+    public void Test15a() {
+        onView(withId(R.id.editCurrentJobButtonID)).perform(click());
+        onView(withId(R.id.currentTitleID)).perform(clearText(), replaceText("Petroleum Engineer"));
+        onView(withId(R.id.currentCompanyID)).perform(clearText(), replaceText("Chevron"));
+        onView(withId(R.id.currentCityID)).perform(clearText(), replaceText("Houst00n"));
+        onView(withId(R.id.currentStateID)).perform(clearText(), replaceText("TX"));
+        onView(withId(R.id.currentCostID)).perform(clearText(), replaceText("145"));
+        onView(withId(R.id.currentCommuteID)).perform(clearText(), replaceText("1.5"));
+        onView(withId(R.id.currentSalaryID)).perform(clearText(), replaceText("250000"));
+        onView(withId(R.id.currentBonusID)).perform(clearText(), replaceText("15000"));
+        onView(withId(R.id.currentRetirementID)).perform(clearText(), replaceText("40"));
+        onView(withId(R.id.currentLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.currentSaveButtonID)).perform(click());
+        onView(withId(R.id.currentCityID)).check(matches(hasErrorText("Invalid City Input")));
+    }
+
+    //Test #15b: saving invalid data entry in enter current job - alphabet in salary
+    @Test
+    public void Test15b() {
+        onView(withId(R.id.editCurrentJobButtonID)).perform(click());
+        onView(withId(R.id.currentTitleID)).perform(clearText(), replaceText("Petroleum Engineer"));
+        onView(withId(R.id.currentCompanyID)).perform(clearText(), replaceText("Chevron"));
+        onView(withId(R.id.currentCityID)).perform(clearText(), replaceText("Houston"));
+        onView(withId(R.id.currentStateID)).perform(clearText(), replaceText("TX"));
+        onView(withId(R.id.currentCostID)).perform(clearText(), replaceText("145"));
+        onView(withId(R.id.currentCommuteID)).perform(clearText(), replaceText("1.5"));
+        onView(withId(R.id.currentSalaryID)).perform(clearText(), replaceText("25oooo"));
+        onView(withId(R.id.currentBonusID)).perform(clearText(), replaceText("15000"));
+        onView(withId(R.id.currentRetirementID)).perform(clearText(), replaceText("40"));
+        onView(withId(R.id.currentLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.currentSaveButtonID)).perform(click());
+        onView(withId(R.id.currentSalaryID)).check(matches(hasErrorText("Invalid Salary Input")));
+    }
+
+    //Test #16: exit without saving of job details of enter current job when canceled
+    @Test
+    public void Test16() {
+        onView(withId(R.id.editCurrentJobButtonID)).perform(click());
+        onView(withId(R.id.currentTitleID)).perform(clearText(), replaceText("Petroleum Engineer"));
+        onView(withId(R.id.currentCompanyID)).perform(clearText(), replaceText("Chevron"));
+        onView(withId(R.id.currentCityID)).perform(clearText(), replaceText("Houston"));
+        onView(withId(R.id.currentStateID)).perform(clearText(), replaceText("TX"));
+        onView(withId(R.id.currentCostID)).perform(clearText(), replaceText("145145 "));
+        onView(withId(R.id.currentCommuteID)).perform(clearText(), replaceText("1.5"));
+        onView(withId(R.id.currentSalaryID)).perform(clearText(), replaceText("250000"));
+        onView(withId(R.id.currentBonusID)).perform(clearText(), replaceText("15000"));
+        onView(withId(R.id.currentRetirementID)).perform(clearText(), replaceText("40"));
+        onView(withId(R.id.currentLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.currentCancelButtonID)).perform(click());
+
+        intended(hasComponent(MainMenu.class.getName()));
+
+        onView(withText("Job details saved")).inRoot(new Toastmatcher()).withFailureHandler(new NoToastMessage())
+                .check(matches(not(isDisplayed())));
+    }
+
+    //Test #17: saving job details in enter job offer with all fields filled with valid data
+    @Test
+    public void Test17() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San Jose"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10000"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerSaveButtonID)).perform(click());
+        onView(withText("Job details saved")).inRoot(new Toastmatcher()).check(matches((isDisplayed())));
+    }
+
+    //Test #18: saving job details in enter job offer with fields partially filled with valid data
+    @Test
+    public void Test18() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San Jose"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        //onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10000"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerSaveButtonID)).perform(click());
+        onView(withId(R.id.offerCommuteID)).check(matches(hasErrorText("No Commute Input")));
+    }
+
+    //Test #19a: saving invalid data entry in enter job offer - number in City string
+    @Test
+    public void Test19a() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San J0s3"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10000"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerSaveButtonID)).perform(click());
+        onView(withId(R.id.offerCityID)).check(matches(hasErrorText("Invalid City Input")));
+    }
+
+    //Test #19b: saving invalid data entry in enter job offer - alphabet in salary
+    @Test
+    public void Test19b() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San Jose"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10ooo"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerSaveButtonID)).perform(click());
+        onView(withId(R.id.offerBonusID)).check(matches(hasErrorText("Invalid Bonus Input")));
+    }
+
+    //Test #20: exit without saving of job details of enter job offer when canceled
+    @Test
+    public void Test20() {
+        onView(withId(R.id.enterJobOfferButtonID)).perform(click());
+        onView(withId(R.id.offerTitleID)).perform(clearText(), replaceText("Software Engineer"));
+        onView(withId(R.id.offerCompanyID)).perform(clearText(), replaceText("Virtual Oil"));
+        onView(withId(R.id.offerCityID)).perform(clearText(), replaceText("San Jose"));
+        onView(withId(R.id.offerStateID)).perform(clearText(), replaceText("CA"));
+        onView(withId(R.id.offerCostID)).perform(clearText(), replaceText("201"));
+        onView(withId(R.id.offerCommuteID)).perform(clearText(), replaceText("1.1"));
+        onView(withId(R.id.offerSalaryID)).perform(clearText(), replaceText("150000"));
+        onView(withId(R.id.offerBonusID)).perform(clearText(), replaceText("10000"));
+        onView(withId(R.id.offerRetirementID)).perform(clearText(), replaceText("30"));
+        onView(withId(R.id.offerLeaveID)).perform(clearText(), replaceText("25"));
+        onView(withId(R.id.offerCancelButtonID)).perform(click());
+
+        intended(hasComponent(MainMenu.class.getName()));
+
+        //onView(withText("Job details saved")).inRoot(new Toastmatcher()).withFailureHandler(new NoToastMessage())
+        //        .check(matches(not(isDisplayed())));
     }
 }
