@@ -28,6 +28,7 @@ public class RankedJobs extends AppCompatActivity {
     private TableLayout table_layout;
     private static String TAG = "MY VALUES";
     private ArrayList<Integer> checkedJobIdList = new ArrayList<Integer>();
+    private ArrayList<Integer> jobIdList = new ArrayList<Integer>();
     private Integer checkboxCounter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +44,30 @@ public class RankedJobs extends AppCompatActivity {
         Integer numJobs = dbHelper.getJobOfferNumRowIDs();
         for (int row = 1; row <= numJobs; row++) {
             JobOffer jo = job.getJobOffer(row);
-            Float jobScore = myApplication.calcJobOfferScore(dbHelper, jo, settings);
-            dbHelper.updateJobOfferScore(row, jobScore);
+            if (jo != null) {
+                Float jobScore = myApplication.calcJobOfferScore(dbHelper, jo, settings);
+                dbHelper.updateJobOfferScore(row, jobScore);
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"Invalid job Offer",Toast.LENGTH_LONG).show();
+            }
         }
         if (dbHelper.isCurrentJobAvailable()) {
             CurrentJob cj = job.getCurrentJob();
-            Float jobScore = myApplication.calcCurrentJobScore(dbHelper, cj, settings);
-            dbHelper.updateCurrentJobScore(jobScore);
+            if (cj != null) {
+                Float jobScore = myApplication.calcCurrentJobScore(dbHelper, cj, settings);
+                dbHelper.updateCurrentJobScore(jobScore);
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"No current job",Toast.LENGTH_LONG).show();
+            }
         }
-
         Cursor jobs = job.getAllJobs();
         table_layout = findViewById(R.id.tableLayout);
-        BuildTable(jobs);
+        if (jobs != null) {
+            BuildTable(jobs);
+            myApplication.setJobIdList(jobIdList);
+        }
 
         rankedMakeComparison.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,8 +96,6 @@ public class RankedJobs extends AppCompatActivity {
 
     private void BuildTable(Cursor jobs){
         jobs.moveToFirst();
-        ArrayList<Integer> jobIdList = new ArrayList<Integer>();
-
         do {
             int colCount = jobs.getColumnCount();
             final TableRow dataRow = new TableRow(this);
@@ -103,20 +114,15 @@ public class RankedJobs extends AppCompatActivity {
 
             int cols = 2;
             final Integer jobId = jobs.getInt(0);
+            jobIdList.add(jobId);
+            Log.v(TAG,"Job ID List sorted by score:" + jobIdList.toString());
             for (int j = 1; j < cols+1; j++) {
                 if(j==1) {
                     final CheckBox cb = new CheckBox(this);
-                    //params.setMargins(0,0,0,0);
-
-                    //cb.setLayoutParams(params);
-                    //cb.setGravity(Gravity.CENTER);
-                    //cb.setPadding(0, 0, 0, 0);
-
                     dataRow.addView(cb);
                     cb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
                             if (cb.isChecked()) {
                                 checkboxCounter+=1;
                                 if (!checkedJobIdList.contains(jobId))
@@ -141,11 +147,9 @@ public class RankedJobs extends AppCompatActivity {
                 if (j==1)
                     tv.setWidth(500);
                 tv.setLayoutParams(params);
-                //tv.setGravity(Gravity.CENTER);
                 tv.setTextSize(24);
                 tv.setSingleLine(false);
                 tv.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-                //tv.setPadding(0, 0, 0, 0);
                 if (jobId == 0 && j == 1) {
                     String str = jobs.getString(j) + " (Current)";
                     tv.setText(str);

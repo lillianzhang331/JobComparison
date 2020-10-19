@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -90,19 +91,21 @@ public class SavedJobOffer extends AppCompatActivity {
             }
         });
 
-
-
         JobOffer jo = job.getLastJobOffer();
-        jobTitle.setText(jo.getTitle());
-        jobCompany.setText(jo.getCompany());
-        jobCity.setText(jo.getCity());
-        jobState.setText(jo.getState());
-        jobCostOfLiving.setText(jo.getCostOfLiving().toString());
-        jobCommute.setText(jo.getCommute().toString());
-        jobSalary.setText(jo.getSalary().toString());
-        jobBonus.setText(jo.getBonus().toString());
-        jobRetirementBenefits.setText(jo.getRetirementBenefits().toString());
-        jobLeaveTime.setText(jo.getLeaveTime().toString());
-
+        if (jo != null){
+            jobTitle.setText(jo.getTitle());
+            jobCompany.setText(jo.getCompany());
+            jobCity.setText(jo.getCity());
+            jobState.setText(jo.getState());
+            jobCostOfLiving.setText(jo.getCostOfLiving().toString());
+            jobCommute.setText(jo.getCommute().toString());
+            jobSalary.setText(jo.getSalary().toString());
+            jobBonus.setText(jo.getBonus().toString());
+            jobRetirementBenefits.setText(jo.getRetirementBenefits().toString());
+            jobLeaveTime.setText(jo.getLeaveTime().toString());
+            }
+        else {
+            Toast.makeText(getApplicationContext(), "Job offer details were not entered", Toast.LENGTH_LONG).show();
+        }
     }
 }

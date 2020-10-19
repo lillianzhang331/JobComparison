@@ -246,7 +246,10 @@ public class JobCompareDbHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor res = db.rawQuery("select * from joboffer union all select * from currentjob order by jobscore desc", null);
-            return res;
+            if (res.moveToFirst())
+                return res;
+            else
+                return null;
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }

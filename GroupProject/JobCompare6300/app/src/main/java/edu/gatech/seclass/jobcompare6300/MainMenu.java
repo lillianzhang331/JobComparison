@@ -54,11 +54,11 @@ public class MainMenu extends AppCompatActivity {
                     startActivity(goToRanked);
                 } else {
                     if (!dbHelper.isCurrentJobAvailable())
-                        Toast.makeText(view.getContext(), "At least 1 Job Offer and Current" +
+                        Toast.makeText(view.getContext(), "At least 1 Job Offer and Current." +
                                 " Job are required to Compare", Toast.LENGTH_LONG).show();
                     else
                         Toast.makeText(view.getContext(), "Not enough Job Offers" +
-                                        " \nAdd jobs using ENTER JOB OFFER",
+                                        "\nAdd jobs using ENTER JOB OFFER",
                                 Toast.LENGTH_LONG).show();
                 }
             }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -58,15 +59,17 @@ public class JobComparison extends AppCompatActivity {
         Intent fromIntent = getIntent();
         if(fromIntent.getExtras().getString("activity").equals("savedjoboffer")) {
             CurrentJob cj = job.getCurrentJob();
-            job1Title.setText(cj.getTitle());
-            job1Company.setText(cj.getCompany());
-            String location1 = cj.getCity() + "," + cj.getState();
-            job1Location.setText(location1);
-            job1Commute.setText(cj.getCommute().toString());
-            job1Salary.setText(cj.getSalary().toString());
-            job1Bonus.setText(cj.getBonus().toString());
-            job1RetirementBenefits.setText(cj.getRetirementBenefits().toString());
-            job1LeaveTime.setText(cj.getLeaveTime().toString());
+            if (cj != null) {
+                job1Title.setText(cj.getTitle());
+                job1Company.setText(cj.getCompany());
+                String location1 = cj.getCity() + "," + cj.getState();
+                job1Location.setText(location1);
+                job1Commute.setText(cj.getCommute().toString());
+                job1Salary.setText(cj.getSalary().toString());
+                job1Bonus.setText(cj.getBonus().toString());
+                job1RetirementBenefits.setText(cj.getRetirementBenefits().toString());
+                job1LeaveTime.setText(cj.getLeaveTime().toString());
+            }
             Bundle job2 = fromIntent.getExtras();
             if (job2 != null) {
                 job2Title.setText(job2.getString("title"));
@@ -89,61 +92,83 @@ public class JobComparison extends AppCompatActivity {
             if(Integer.parseInt(job1Id)>0) {
                 JobOffer job1;
                 job1 = job.getJobOffer(Integer.parseInt(job1Id));
-                job1Title.setText(job1.getTitle());
-                job1Company.setText(job1.getCompany());
-                String location1 = job1.getCity() + "," + job1.getState();
-                job1Location.setText(location1);
-                job1Commute.setText(job1.getCommute().toString());
-                String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper,
-                        job1.getCostOfLiving().toString(), job1.getSalary().toString());
-                job1Salary.setText(adjustedSalary);
-                String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper,
-                        job1.getCostOfLiving().toString(), job1.getBonus().toString());
-                job1Bonus.setText(adjustedBonus);
-                job1RetirementBenefits.setText(job1.getRetirementBenefits().toString());
-                job1LeaveTime.setText(job1.getLeaveTime().toString());
+                if (job1 != null) {
+                    job1Title.setText(job1.getTitle());
+                    job1Company.setText(job1.getCompany());
+                    String location1 = job1.getCity() + "," + job1.getState();
+                    job1Location.setText(location1);
+                    job1Commute.setText(job1.getCommute().toString());
+                    String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper,
+                            job1.getCostOfLiving().toString(), job1.getSalary().toString());
+                    job1Salary.setText(adjustedSalary);
+                    String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper,
+                            job1.getCostOfLiving().toString(), job1.getBonus().toString());
+                    job1Bonus.setText(adjustedBonus);
+                    job1RetirementBenefits.setText(job1.getRetirementBenefits().toString());
+                    job1LeaveTime.setText(job1.getLeaveTime().toString());
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Invalid Job ID", Toast.LENGTH_LONG).show();
+                }
+
             }
             else {
                 CurrentJob job1;
                 job1 = job.getCurrentJob();
-                job1Title.setText(job1.getTitle());
-                job1Company.setText(job1.getCompany());
-                String location1 = job1.getCity() + "," + job1.getState();
-                job1Location.setText(location1);
-                job1Commute.setText(job1.getCommute().toString());
-                job1Salary.setText(job1.getSalary().toString());
-                job1Bonus.setText(job1.getBonus().toString());
-                job1RetirementBenefits.setText(job1.getRetirementBenefits().toString());
-                job1LeaveTime.setText(job1.getLeaveTime().toString());
+                if (job1 != null) {
+                    job1Title.setText(job1.getTitle());
+                    job1Company.setText(job1.getCompany());
+                    String location1 = job1.getCity() + "," + job1.getState();
+                    job1Location.setText(location1);
+                    job1Commute.setText(job1.getCommute().toString());
+                    job1Salary.setText(job1.getSalary().toString());
+                    job1Bonus.setText(job1.getBonus().toString());
+                    job1RetirementBenefits.setText(job1.getRetirementBenefits().toString());
+                    job1LeaveTime.setText(job1.getLeaveTime().toString());
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Invalid Current Job ID", Toast.LENGTH_LONG).show();
+                }
             }
 
             if(Integer.parseInt(job2Id)>0) {
                 JobOffer job2 = job.getJobOffer(Integer.parseInt(job2Id));
-                job2Title.setText(job2.getTitle());
-                job2Company.setText(job2.getCompany());
-                String location2 = job2.getCity() + "," + job2.getState();
-                job2Location.setText(location2);
-                job2Commute.setText(job2.getCommute().toString());
-                String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper,
-                        job2.getCostOfLiving().toString(), job2.getSalary().toString());
-                job2Salary.setText(adjustedSalary);
-                String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper,
-                        job2.getCostOfLiving().toString(), job2.getBonus().toString());
-                job2Bonus.setText(adjustedBonus);
-                job2RetirementBenefits.setText(job2.getRetirementBenefits().toString());
-                job2LeaveTime.setText(job2.getLeaveTime().toString());
+                if (job2 != null) {
+                    job2Title.setText(job2.getTitle());
+                    job2Company.setText(job2.getCompany());
+                    String location2 = job2.getCity() + "," + job2.getState();
+                    job2Location.setText(location2);
+                    job2Commute.setText(job2.getCommute().toString());
+                    String adjustedSalary = myApplication.adjustedYearlySalary(dbHelper,
+                            job2.getCostOfLiving().toString(), job2.getSalary().toString());
+                    job2Salary.setText(adjustedSalary);
+                    String adjustedBonus = myApplication.adjustedYearlyBonus(dbHelper,
+                            job2.getCostOfLiving().toString(), job2.getBonus().toString());
+                    job2Bonus.setText(adjustedBonus);
+                    job2RetirementBenefits.setText(job2.getRetirementBenefits().toString());
+                    job2LeaveTime.setText(job2.getLeaveTime().toString());
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Invalid Job ID", Toast.LENGTH_LONG).show();
+                }
             }
             else if (Integer.parseInt(job2Id)==0){
                 CurrentJob job2 = job.getCurrentJob();
-                job2Title.setText(job2.getTitle());
-                job2Company.setText(job2.getCompany());
-                String location2 = job2.getCity() + "," + job2.getState();
-                job2Location.setText(location2);
-                job2Commute.setText(job2.getCommute().toString());
-                job2Salary.setText(job2.getSalary().toString());
-                job2Bonus.setText(job2.getBonus().toString());
-                job2RetirementBenefits.setText(job2.getRetirementBenefits().toString());
-                job2LeaveTime.setText(job2.getLeaveTime().toString());
+                if (job2 != null){
+                    job2Title.setText(job2.getTitle());
+                    job2Company.setText(job2.getCompany());
+                    String location2 = job2.getCity() + "," + job2.getState();
+                    job2Location.setText(location2);
+                    job2Commute.setText(job2.getCommute().toString());
+                    job2Salary.setText(job2.getSalary().toString());
+                    job2Bonus.setText(job2.getBonus().toString());
+                    job2RetirementBenefits.setText(job2.getRetirementBenefits().toString());
+                    job2LeaveTime.setText(job2.getLeaveTime().toString());
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Invalid Current Job ID", Toast.LENGTH_LONG).show();
+                }
             }
         }
         Button returnToMain = (Button) findViewById(R.id.returnToMainMenuButtonID);

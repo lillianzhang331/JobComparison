@@ -33,21 +33,24 @@ public class JobManager {
 
     public CurrentJob getCurrentJob() {
         Cursor job = dbHelper.getCurrentJob();
-        job.moveToFirst();
-        CurrentJob cj = new CurrentJob(dbHelper);
+        if (job.moveToFirst()) {
+            CurrentJob cj = new CurrentJob(dbHelper);
 
-        cj.setTitle(job.getString(0));
-        cj.setCompany(job.getString(1));
-        cj.setCity(job.getString(2));
-        cj.setState(job.getString(3));
-        cj.setCostOfLiving(job.getInt(4));
-        cj.setCommute(job.getFloat(5));
-        cj.setSalary(job.getFloat(6));
-        cj.setBonus(job.getFloat(7));
-        cj.setRetirementBenefits(job.getInt(8));
-        cj.setLeaveTime(job.getInt(9));
-        cj.setJobScore(job.getFloat(10));
-        return cj;
+            cj.setTitle(job.getString(0));
+            cj.setCompany(job.getString(1));
+            cj.setCity(job.getString(2));
+            cj.setState(job.getString(3));
+            cj.setCostOfLiving(job.getInt(4));
+            cj.setCommute(job.getFloat(5));
+            cj.setSalary(job.getFloat(6));
+            cj.setBonus(job.getFloat(7));
+            cj.setRetirementBenefits(job.getInt(8));
+            cj.setLeaveTime(job.getInt(9));
+            cj.setJobScore(job.getFloat(10));
+            return cj;
+        }
+        else
+            return null;
     }
 
     public void enterJobOffer(String inputTitle, String inputCompany, String inputCity, String inputState, Integer inputCostOfLiving,
@@ -69,42 +72,48 @@ public class JobManager {
 
     public JobOffer getLastJobOffer() {
         Cursor job = dbHelper.getLastJobOffer();
-        job.moveToFirst();
-        JobOffer jo = new JobOffer(dbHelper);
+        if (job.moveToFirst()) {
+            JobOffer jo = new JobOffer(dbHelper);
 
-        jo.setTitle(job.getString(0));
-        jo.setCompany(job.getString(1));
-        jo.setCity(job.getString(2));
-        jo.setState(job.getString(3));
-        jo.setCostOfLiving(job.getInt(4));
-        jo.setCommute(job.getFloat(5));
-        jo.setSalary(job.getFloat(6));
-        jo.setBonus(job.getFloat(7));
-        jo.setRetirementBenefits(job.getInt(8));
-        jo.setLeaveTime(job.getInt(9));
-        jo.setJobScore(job.getFloat(10));
+            jo.setTitle(job.getString(0));
+            jo.setCompany(job.getString(1));
+            jo.setCity(job.getString(2));
+            jo.setState(job.getString(3));
+            jo.setCostOfLiving(job.getInt(4));
+            jo.setCommute(job.getFloat(5));
+            jo.setSalary(job.getFloat(6));
+            jo.setBonus(job.getFloat(7));
+            jo.setRetirementBenefits(job.getInt(8));
+            jo.setLeaveTime(job.getInt(9));
+            jo.setJobScore(job.getFloat(10));
 
-        return jo;
+            return jo;
+        }
+        else
+            return null;
     }
 
     public JobOffer getJobOffer(Integer rowid) {
         Cursor job = dbHelper.getJobOfferByID(rowid);
-        job.moveToFirst();
-        JobOffer jo = new JobOffer(dbHelper);
+        if(job.moveToFirst()) {
+            JobOffer jo = new JobOffer(dbHelper);
 
-        jo.setTitle(job.getString(0));
-        jo.setCompany(job.getString(1));
-        jo.setCity(job.getString(2));
-        jo.setState(job.getString(3));
-        jo.setCostOfLiving(job.getInt(4));
-        jo.setCommute(job.getFloat(5));
-        jo.setSalary(job.getFloat(6));
-        jo.setBonus(job.getFloat(7));
-        jo.setRetirementBenefits(job.getInt(8));
-        jo.setLeaveTime(job.getInt(9));
-        jo.setJobScore(job.getFloat(10));
+            jo.setTitle(job.getString(0));
+            jo.setCompany(job.getString(1));
+            jo.setCity(job.getString(2));
+            jo.setState(job.getString(3));
+            jo.setCostOfLiving(job.getInt(4));
+            jo.setCommute(job.getFloat(5));
+            jo.setSalary(job.getFloat(6));
+            jo.setBonus(job.getFloat(7));
+            jo.setRetirementBenefits(job.getInt(8));
+            jo.setLeaveTime(job.getInt(9));
+            jo.setJobScore(job.getFloat(10));
 
-        return jo;
+            return jo;
+        }
+        else
+            return null;
     }
 
     public Cursor getAllJobs(){

@@ -3,6 +3,8 @@ package edu.gatech.seclass.jobcompare6300;
 import android.app.Application;
 import android.icu.math.BigDecimal;
 
+import java.util.ArrayList;
+
 import edu.gatech.seclass.jobcompare6300.model.ComparisonSettingsModel;
 import edu.gatech.seclass.jobcompare6300.model.CurrentJob;
 import edu.gatech.seclass.jobcompare6300.model.JobCompareDbHelper;
@@ -18,7 +20,13 @@ public class MyApplication extends Application {
      * app is closed.
      */
     private Integer commuteWt=5, salaryWt=5, bonusWt=5, retirementbenefitsWt=5, leaveWt=5;
-
+    public ArrayList<Integer> jobIdList = new ArrayList<Integer>();
+    public void setJobIdList (ArrayList<Integer> jobIdList) {
+        this.jobIdList = jobIdList;
+    }
+    public ArrayList<Integer> getJobIdList () {
+        return this.jobIdList;
+    }
     public void adjustSettings(Integer commuteWt, Integer salaryWt, Integer bonusWt,
                                Integer retirementbenefitsWt, Integer leaveWt){
         this.commuteWt=commuteWt;
